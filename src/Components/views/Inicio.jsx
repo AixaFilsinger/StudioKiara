@@ -42,7 +42,7 @@ const Inicio = () => {
                 </Row>
 
             </Container>
-           
+           <CardInicio></CardInicio>
                
             
         </section>

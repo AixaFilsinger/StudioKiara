@@ -32,8 +32,8 @@ const Menu = () => {
               Nosotros
             </NavLink>
 
-            <NavLink end className={"nav-item nav-link"} to={"/administrador"}>
-              Administrador
+            <NavLink end className={"nav-item nav-link"} to={"/Reservas"}>
+              Reservas
             </NavLink>
 
             <NavLink end className={"nav-item nav-link"} to={"/login"}>

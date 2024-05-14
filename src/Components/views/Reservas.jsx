@@ -92,7 +92,7 @@ const Reservas = () => {
         </label>
       </div>
       <div>
-        <button type="submit">Enviar</button>
+        <button type="submit">Confirmar Reserva</button>
       </div>
     </form>
   );

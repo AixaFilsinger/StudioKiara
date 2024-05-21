@@ -8,7 +8,7 @@ import Contacto from './Components/views/Contacto'
 import Cursos from './Components/views/Cursos'
 import Nosotros from './Components/views/Nosotros'
 import Servicios from './Components/views/Servicios'
-import Reservas from './Components/views/Reservas'
+import Reservas from './Components/views/Reserva/Reservas'
 import Error404 from './Components/views/Error404'
 function App() {
  
@@ -22,7 +22,7 @@ function App() {
     <Route exact path="/nosotros" element={<Nosotros ></Nosotros>}></Route>
     <Route exact path="/servicios" element={<Servicios ></Servicios>}></Route>
     <Route exact path="/cursos" element={<Cursos ></Cursos>}></Route>
-    <Route  path="/Reservas/*" element={<Reservas></Reservas> }></Route>
+    <Route  path="/Reservas*" element={<Reservas></Reservas> }></Route>
     <Route  path="*" element={<Error404></Error404>}></Route>
    </Routes>
    <Footer></Footer>

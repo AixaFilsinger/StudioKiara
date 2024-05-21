@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './Reserva.module.css';
 
 const Reservas = () => {
   const [formData, setFormData] = useState({
@@ -23,8 +24,8 @@ const Reservas = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form className={styles.formContainer} onSubmit={handleSubmit}>
+      <div className={styles.formGroup}>
         <label>
           Apellido y Nombre:
           <input
@@ -36,7 +37,7 @@ const Reservas = () => {
           />
         </label>
       </div>
-      <div>
+      <div className={styles.formGroup}>
         <label>
           Correo Electrónico:
           <input
@@ -48,7 +49,7 @@ const Reservas = () => {
           />
         </label>
       </div>
-      <div>
+      <div className={styles.formGroup}>
         <label>
           Número de Celular:
           <input
@@ -61,7 +62,7 @@ const Reservas = () => {
           />
         </label>
       </div>
-      <div>
+      <div className={styles.formGroup}>
         <label>
           Día:
           <input
@@ -73,7 +74,7 @@ const Reservas = () => {
           />
         </label>
       </div>
-      <div>
+      <div className={styles.formGroup}>
         <label>
           Hora:
           <select
@@ -84,7 +85,7 @@ const Reservas = () => {
           >
             <option value="">Selecciona una hora</option>
             {Array.from({ length: 11 }, (_, index) => (
-              <option key={index + 10} value={index + 10}>
+              <option key={index + 10} value={`${index + 10}:00`}>
                 {`${index + 10}:00`}
               </option>
             ))}

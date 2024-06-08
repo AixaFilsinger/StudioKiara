@@ -117,7 +117,7 @@ const Reservas = () => {
             onChange={handleChange}
             required
           >
-            <option value="">Selecciona una hora</option>
+            <option value="">Seleccione una hora</option>
             {Array.from({ length: 11 }, (_, index) => (
               <option key={index + 10} value={`${index + 10}:00`}>
                 {`${index + 10}:00`}

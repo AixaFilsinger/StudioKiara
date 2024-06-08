@@ -55,6 +55,7 @@ app.post("/validateReservation", (req, res) => {
     }
     if (!time || !validTimes.includes(time)) errors.push("Hora inválida");
 
+    //Consultar los estados
     if (errors.length > 0) {
         return res.status(400).json({ errors });
     }

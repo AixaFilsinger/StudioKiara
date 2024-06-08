@@ -89,7 +89,7 @@ const Reservas = () => {
             onChange={handleChange}
             required
           >
-            <option value=''>Seleccione el tratamiento</option>
+            <option value=''>Seleccione el servicio que desea reservar</option>
             <option value='nails'>Uñas</option>
             <option value='eyelashes'>Pestañas</option>
             <option value='eyebrows'>Cejas</option>

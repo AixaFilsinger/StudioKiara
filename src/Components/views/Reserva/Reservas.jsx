@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Reserva.module.css';
 import axios from 'axios';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 const Reservas = () => {
   const initialState = {
@@ -14,6 +16,32 @@ const Reservas = () => {
 
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState([]);
+  const [disabledDates, setDisabledDate] = useState([]);
+
+  //Solicitud al backend para obtener las fechas deshabilitadas
+  useEffect(() => {
+    const fetchDisabledDates = async () => {
+      try{
+        const rsp = await axios.get('http://localhost:3002/disabledDates'); //Cambiar cuando este lista la base de datos
+        if(rsp.status === 200){
+          console.log('Fechas deshabilitadas obtenidas:', rsp.data);
+          const dates = [];
+          rsp.data.forEach(item => {
+            dates.push(item.date);
+          });
+          setDisabledDate(dates);
+        }
+      } catch(error){
+        console.error('Error al recuperar las fechas deshabilitadas', error);
+      }
+    };
+    fetchDisabledDates();
+  }, []);
+
+  const disableSundays = (date) => {
+    const day = date.getDay();
+    return day === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,6 +51,12 @@ const Reservas = () => {
     });
   };
 
+  const handleDateChange = (selectedDates) => {
+    setFormData({
+      ...formData,
+      date: selectedDates[0]
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,7 +74,7 @@ const Reservas = () => {
     setFormData(initialState); // Limpiamos el formulario después de enviarlo
   };
 
-  
+
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit}>
       <div className={styles.formGroup}>
@@ -89,7 +123,7 @@ const Reservas = () => {
             onChange={handleChange}
             required
           >
-            <option value=''>Seleccione el servicio que desea reservar</option>
+            <option value=''>Seleccione el servicio</option>
             <option value='nails'>Uñas</option>
             <option value='eyelashes'>Pestañas</option>
             <option value='eyebrows'>Cejas</option>
@@ -99,11 +133,17 @@ const Reservas = () => {
       <div className={styles.formGroup}>
         <label>
           Día:
-          <input
-            type="date"
-            name="date"
+          <Flatpickr
+            className={styles.flatpickrContainer}
             value={formData.date}
-            onChange={handleChange}
+            onChange={handleDateChange}
+            options={{
+              altInput: true,
+              altFormat: "F j, Y",
+              dateFormat: "Y-m-d",
+              minDate: "today",
+              disable: [...disabledDates, disableSundays]
+            }}
             required
           />
         </label>
@@ -111,7 +151,19 @@ const Reservas = () => {
       <div className={styles.formGroup}>
         <label>
           Hora:
-          <select
+          <Flatpickr
+          value={formData.time}
+          onChange={handleDateChange}
+            options= {{
+              enableTime: true,
+              noCalendar: true,
+              dateFormat: "H:i",
+              minTime: "10:00",
+              maxTime: "20:00",
+            }}
+            required
+          />
+          {/* <select
             name="time"
             value={formData.time}
             onChange={handleChange}
@@ -123,7 +175,7 @@ const Reservas = () => {
                 {`${index + 10}:00`}
               </option>
             ))}
-          </select>
+          </select> */}
         </label>
       </div>
       <div>

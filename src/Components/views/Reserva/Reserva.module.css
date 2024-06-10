@@ -6,6 +6,10 @@
     background-color: #ffffff;
     text-align: center;
   }
+
+  .flatpickrContainer {
+    width: 95%;
+  }
   
   .formGroup {
     margin-bottom: 15px;
@@ -41,3 +45,5 @@
   button:hover {
     background-color: #fabfbf;
   }
+
+ 

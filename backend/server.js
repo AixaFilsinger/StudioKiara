@@ -46,7 +46,7 @@ app.post("/validateReservation", (req, res) => {
     if (!service || !validServices.includes(service))
         errors.push("Servicio inválido");
 
-    if (!date || isNaN(Date.parse(date))) errors.push("Fecha inválida");
+    if (!formData.date) {validationErrors.push("Por favor, selecciona una fecha.");}
     
     const validTimes = [];
     for (let hour = 8; hour <= 17; hour++) {

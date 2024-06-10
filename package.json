@@ -19,9 +19,11 @@
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "flatpickr": "^4.6.13",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
+    "react-flatpickr": "^3.10.13",
     "react-hook-form": "^7.51.4",
     "react-icons": "^5.2.0",
     "react-router-dom": "^6.23.0"

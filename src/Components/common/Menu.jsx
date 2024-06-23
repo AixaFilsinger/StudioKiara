@@ -1,4 +1,4 @@
-// src/Components/common/Menu.js
+
 import React from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -33,9 +33,7 @@ const Menu = ({ showModal }) => {
             <NavLink end className="nav-item nav-link" to={"/nosotros"}>
               Nosotros
             </NavLink>
-            <NavLink end className="nav-item nav-link" to={"/administrador"}>
-              Administrador
-            </NavLink>
+
             <button type="button" className="btn btn-primary" onClick={showModal}>
               Login
             </button>

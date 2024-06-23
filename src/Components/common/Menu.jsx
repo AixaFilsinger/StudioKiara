@@ -36,16 +36,12 @@ const Menu = ({ showModal }) => {
             <NavLink end className="nav-item nav-link" to={"/nosotros"}>
               Nosotros
             </NavLink>
-            {currentUser && (
-              <NavLink end className="nav-item nav-link" to={"/administrador"}>
-                Administrador
-              </NavLink>
-            )}
-            {!currentUser && (
-              <button type="button" className="btn btn-primary" onClick={showModal}>
-                Login
-              </button>
-            )}
+
+
+            <button type="button" className="btn btn-primary" onClick={showModal}>
+              Login
+            </button>
+
           </Nav>
         </Navbar.Collapse>
       </Container>

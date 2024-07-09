@@ -1,43 +1,40 @@
-
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import uñas from "../../assets/uñas1.jpg";
 const Cursos = () => {
-    
   return (
-    <section>
-      <h1>Nuestros cursos</h1>
-      <p>
+    <section className="mainSection p-5">
+      <h1 className="text-center fw-semibold mt-0 mb-3">Nuestros cursos</h1>
+      <p className="texto-cursos">
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Delectus qui
         sunt culpa animi porro enim sint adipisci accusantium, odio minima,
         obcaecati quibusdam tempora error? Eos, similique, perferendis iusto
         repudiandae eius sit odio omnis, praesentium voluptas blanditiis
         facilis. Doloremque quos fugiat doloribus, aliquam sapiente quam atque
         repudiandae sunt asperiores corrupti? Nostrum totam laboriosam nulla
-        officia quia, harum error debitis. Ratione, cumque est, ab rem sed a
-        deleniti perspiciatis saepe repellendus cupiditate ea. Nihil error,
-        delectus quis vel unde impedit ullam quo iure nemo recusandae quas
-        itaque, voluptatibus perspiciatis voluptates distinctio aperiam culpa
-        aut aliquam mollitia a et velit accusantium! Accusamus, dolorem.
       </p>
       <article>
         <div className="container text-center">
           <div className="row">
-            <div className="col">
-            <div className="card flex justify-content-center">
-            <Card title="Advanced Card" subTitle="Card subtitle" footer={footer} header={header} className="md:w-25rem">
-                <p className="m-0">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae 
-                    numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!
-                </p>
-            </Card>
-        </div>
+            <div className="col-sm-12 col-md-4">
+              <Card style={{ width: "16rem", border: "1px solid #FFD700" }} className="borde-card">
+                <Card.Img variant="top" src={uñas} />
+                <Card.Body className="bg-card-cursos ">
+                  <Card.Title className="fw-semibold">Manicura</Card.Title>
+                  <Card.Text>
+                    
+                    Some quick example text to build on the card title and make
+                    up the bulk of the card's content.
+                  </Card.Text>
+                  <Button size="lg" className="btn-cursos">Inscribirse</Button>
+                </Card.Body>
+              </Card>
             </div>
-            <div className="col">
-            
-            </div>
-            <div className="col">Column</div>
+            <div className="col-sm-12 col-md-4"></div>
+            <div className="col-sm-12 col-md-4">Column</div>
           </div>
         </div>
       </article>
-      
     </section>
   );
 };

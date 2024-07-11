@@ -10,6 +10,7 @@ import Contacto from './Components/views/Contacto';
 import Cursos from './Components/views/Cursos';
 import Nosotros from './Components/views/Nosotros';
 import Servicios from './Components/views/Servicios';
+import Reservas from './Components/views/Reserva/Reservas';
 import Admin from './Components/views/Admin';
 import Error404 from './Components/views/Error404';
 import Modal from './Components/Modal/Modal';
@@ -41,6 +42,7 @@ function App() {
           <Route exact path="/nosotros" element={<Nosotros />}></Route>
           <Route exact path="/servicios" element={<Servicios />}></Route>
           <Route exact path="/cursos" element={<Cursos />}></Route>
+          <Route  path="/Reservas*" element={<Reservas></Reservas> }></Route>
           <Route
             path="/administrador/*"
             element={

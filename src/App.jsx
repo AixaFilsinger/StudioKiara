@@ -1,8 +1,9 @@
 // src/App.js
-import React, { useState } from 'react';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Menu from './Components/common/Menu';
 import Footer from './Components/common/Footer';
 import Inicio from './Components/views/Inicio';
@@ -41,8 +42,8 @@ function App() {
           <Route exact path="/contacto" element={<Contacto />}></Route>
           <Route exact path="/nosotros" element={<Nosotros />}></Route>
           <Route exact path="/servicios" element={<Servicios />}></Route>
-          <Route exact path="/cursos" element={<Cursos />}></Route>
           <Route  path="/Reservas*" element={<Reservas></Reservas> }></Route>
+          <Route exact path="/cursos" element={<Cursos></Cursos>}></Route>
           <Route
             path="/administrador/*"
             element={

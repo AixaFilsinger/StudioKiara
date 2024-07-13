@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Card, Spinner, Alert, Button, Modal, Form } from 'react-bootstrap';
 
@@ -14,10 +14,10 @@ const Admin = () => {
     const [showReservaModal, setShowReservaModal] = useState(false);
     const [currentReserva, setCurrentReserva] = useState(null);
     const [formData, setFormData] = useState({
-        idcliente: '',
-        idservicio: '',
-        dia: '',
-        horario: ''
+        idCliente: '',
+        idServicio: '',
+        Dia: '',
+        Horario: ''
     });
 
     const fetchData = useCallback(async () => {
@@ -42,19 +42,19 @@ const Admin = () => {
         fetchData();
     }, [fetchData]);
 
-    const getClienteNombre = (idcliente) => {
-        const cliente = clientes.find(c => c.idcliente === idcliente);
+    const getClienteNombre = (idCliente) => {
+        const cliente = clientes.find(c => c.idcliente === idCliente);
         return cliente ? cliente.nombreapellido : 'Cliente desconocido';
     };
 
-    const getServicioNombre = (idservicio) => {
-        const servicio = servicios.find(s => s.idservicio === idservicio);
+    const getServicioNombre = (idServicio) => {
+        const servicio = servicios.find(s => s.idservicio === idServicio);
         return servicio ? servicio.nombreservicio : 'Servicio desconocido';
     };
 
-    const handleDelete = async (idreserva) => {
+    const handleDelete = async (idReserva) => {
         try {
-            await axios.delete(`https://kiara-studio-vercel.vercel.app/api/reservas/${idreserva}`);
+            await axios.delete(`https://kiara-studio-vercel.vercel.app/api/reservas/${idReserva}`);
             await fetchData();
         } catch (error) {
             console.error('Error deleting reservation:', error);
@@ -64,11 +64,25 @@ const Admin = () => {
 
     const handleSave = async (e) => {
         e.preventDefault();
+
+        // Formatear la fecha y hora
+        const data = {
+            ...formData,
+            Dia: format(parse(formData.Dia, 'yyyy-MM-dd', new Date()), 'yyyy-MM-dd'),
+            Horario: formData.Horario
+        };
+
+        // Verificar campos requeridos
+        if (!data.idCliente || !data.idServicio || !data.Dia || !data.Horario) {
+            setError({ message: 'Todos los campos son requeridos' });
+            return;
+        }
+
         try {
             if (currentReserva) {
-                await axios.put(`https://kiara-studio-vercel.vercel.app/api/reservas/${currentReserva.idreserva}`, formData);
+                await axios.put(`https://kiara-studio-vercel.vercel.app/api/reservas/${currentReserva.idreserva}`, data);
             } else {
-                await axios.post('https://kiara-studio-vercel.vercel.app/api/reservas', formData);
+                await axios.post('https://kiara-studio-vercel.vercel.app/api/reservas', data);
             }
             await fetchData();
             handleCloseModal();
@@ -81,23 +95,23 @@ const Admin = () => {
     const handleEdit = (reserva) => {
         setCurrentReserva(reserva);
         setFormData({
-            idcliente: reserva.idcliente,
-            idservicio: reserva.idservicio,
-            dia: reserva.dia.split('T')[0],
-            horario: reserva.horario.substring(0, 5)
+            idCliente: reserva.idcliente,
+            idServicio: reserva.idservicio,
+            Dia: format(new Date(reserva.dia), 'yyyy-MM-dd'),
+            Horario: reserva.horario
         });
         setShowReservaModal(true);
     };
 
     const handleAdd = () => {
         setCurrentReserva(null);
-        setFormData({ idcliente: '', idservicio: '', dia: '', horario: '' });
+        setFormData({ idCliente: '', idServicio: '', Dia: '', Horario: '' });
         setShowReservaModal(true);
     };
 
     const handleCloseModal = () => {
         setShowReservaModal(false);
-        setFormData({ idcliente: '', idservicio: '', dia: '', horario: '' });
+        setFormData({ idCliente: '', idServicio: '', Dia: '', Horario: '' });
     };
 
     const handleInputChange = (e) => {
@@ -134,7 +148,7 @@ const Admin = () => {
                         <Card>
                             <Card.Body>
                                 <Card.Title>{format(new Date(reserva.dia), 'dd/MM/yyyy')}</Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">{reserva.horario.substring(0, 5)}</Card.Subtitle>
+                                <Card.Subtitle className="mb-2 text-muted">{reserva.horario}</Card.Subtitle>
                                 <Card.Text><strong>Cliente:</strong> {getClienteNombre(reserva.idcliente)}</Card.Text>
                                 <Card.Text><strong>Servicio:</strong> {getServicioNombre(reserva.idservicio)}</Card.Text>
                                 <Button variant="primary" onClick={() => handleEdit(reserva)}>Editar</Button>
@@ -154,8 +168,8 @@ const Admin = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Cliente</Form.Label>
                             <Form.Select
-                                name="idcliente"
-                                value={formData.idcliente}
+                                name="idCliente"
+                                value={formData.idCliente}
                                 onChange={handleInputChange}
                                 required
                             >
@@ -168,8 +182,8 @@ const Admin = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Servicio</Form.Label>
                             <Form.Select
-                                name="idservicio"
-                                value={formData.idservicio}
+                                name="idServicio"
+                                value={formData.idServicio}
                                 onChange={handleInputChange}
                                 required
                             >
@@ -183,8 +197,8 @@ const Admin = () => {
                             <Form.Label>Día</Form.Label>
                             <Form.Control
                                 type="date"
-                                name="dia"
-                                value={formData.dia}
+                                name="Dia"
+                                value={formData.Dia}
                                 onChange={handleInputChange}
                                 required
                             />
@@ -193,8 +207,8 @@ const Admin = () => {
                             <Form.Label>Horario</Form.Label>
                             <Form.Control
                                 type="time"
-                                name="horario"
-                                value={formData.horario}
+                                name="Horario"
+                                value={formData.Horario}
                                 onChange={handleInputChange}
                                 required
                             />
@@ -214,4 +228,3 @@ const Admin = () => {
 
 export default Admin;
 
-// instalar (npm install date-fns) para poder funcionar el formato de dias y hora

@@ -211,5 +211,5 @@
 
 }
 .btn-cursos:hover {
-  background-color: #ffff; /* Cambia a un tono más oscuro de rosa al hacer hover */
+  background-color: #ffff !important; /* Cambia a un tono más oscuro de rosa al hacer hover */
 }

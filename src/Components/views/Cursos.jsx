@@ -16,7 +16,7 @@ const Cursos = () => {
       <article>
         <div className="container text-center">
           <div className="row">
-            <div className="col-sm-12 col-md-4">
+            <div className="col-sm-12 col-md-4 mb-3">
               <Card style={{ width: "16rem", border: "1px solid #FFD700" }} className="borde-card">
                 <Card.Img variant="top" src={uñas} />
                 <Card.Body className="bg-card-cursos ">
@@ -30,7 +30,7 @@ const Cursos = () => {
                 </Card.Body>
               </Card>
             </div>
-            <div className="col-sm-12 col-md-4">
+            <div className="col-sm-12 col-md-4 mb-3">
               <Card style={{ width: "16rem", border: "1px solid #FFD700" }} className="borde-card">
                 <Card.Img variant="top" src={uñas} />
                 <Card.Body className="bg-card-cursos ">

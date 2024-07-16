@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import { format, parse } from 'date-fns';
+import { format, parseISO, addDays } from 'date-fns';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Card, Spinner, Alert, Button, Modal, Form } from 'react-bootstrap';
+import Select from 'react-select';
 
 const Admin = () => {
     const [reservas, setReservas] = useState([]);
@@ -65,10 +66,9 @@ const Admin = () => {
     const handleSave = async (e) => {
         e.preventDefault();
 
-        // Formatear la fecha y hora
         const data = {
             ...formData,
-            Dia: format(parse(formData.Dia, 'yyyy-MM-dd', new Date()), 'yyyy-MM-dd'),
+            Dia: new Date(formData.Dia).toISOString(),
             Horario: formData.Horario
         };
 
@@ -97,7 +97,7 @@ const Admin = () => {
         setFormData({
             idCliente: reserva.idcliente,
             idServicio: reserva.idservicio,
-            Dia: format(new Date(reserva.dia), 'yyyy-MM-dd'),
+            Dia: format(parseISO(reserva.dia), 'yyyy-MM-dd'),
             Horario: reserva.horario
         });
         setShowReservaModal(true);
@@ -118,6 +118,15 @@ const Admin = () => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
+
+    const handleSelectChange = (selectedOption, actionMeta) => {
+        setFormData(prev => ({ ...prev, [actionMeta.name]: selectedOption ? selectedOption.value : '' }));
+    };
+
+    const clienteOptions = clientes.map(cliente => ({
+        value: cliente.idcliente,
+        label: cliente.nombreapellido
+    }));
 
     if (loading) {
         return (
@@ -147,7 +156,7 @@ const Admin = () => {
                     <Col key={reserva.idreserva} md={4} className="mb-4">
                         <Card>
                             <Card.Body>
-                                <Card.Title>{format(new Date(reserva.dia), 'dd/MM/yyyy')}</Card.Title>
+                                <Card.Title>{format(addDays(parseISO(reserva.dia), 1), 'dd/MM/yyyy')}</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">{reserva.horario}</Card.Subtitle>
                                 <Card.Text><strong>Cliente:</strong> {getClienteNombre(reserva.idcliente)}</Card.Text>
                                 <Card.Text><strong>Servicio:</strong> {getServicioNombre(reserva.idservicio)}</Card.Text>
@@ -167,17 +176,14 @@ const Admin = () => {
                     <Modal.Body>
                         <Form.Group className="mb-3">
                             <Form.Label>Cliente</Form.Label>
-                            <Form.Select
+                            <Select
                                 name="idCliente"
-                                value={formData.idCliente}
-                                onChange={handleInputChange}
+                                value={clienteOptions.find(option => option.value === formData.idCliente)}
+                                onChange={handleSelectChange}
+                                options={clienteOptions}
+                                isClearable
                                 required
-                            >
-                                <option value="">Seleccione un cliente</option>
-                                {clientes.map(cliente => (
-                                    <option key={cliente.idcliente} value={cliente.idcliente}>{cliente.nombreapellido}</option>
-                                ))}
-                            </Form.Select>
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Servicio</Form.Label>

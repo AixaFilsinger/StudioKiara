@@ -51,6 +51,13 @@ const Reservas = () => {
     });
   };
 
+  const handleTimeChange = (selectedTimes) => {
+    setFormData({
+      ...formData,
+      time: selectedTimes[0]
+    });
+  };
+
   const handleDateChange = (selectedDates) => {
     setFormData({
       ...formData,
@@ -153,11 +160,10 @@ const Reservas = () => {
           Hora:
           <Flatpickr
           value={formData.time}
-          onChange={handleDateChange}
+          onChange={handleTimeChange}
             options= {{
               enableTime: true,
               noCalendar: true,
-              dateFormat: "H:i",
               minTime: "10:00",
               maxTime: "20:00",
             }}

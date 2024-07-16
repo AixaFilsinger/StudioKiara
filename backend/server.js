@@ -43,13 +43,13 @@ app.post("/validateReservation", (req, res) => {
     if (!phone || !/^\d{10}$/.test(phone)) errors.push("Teléfono inválido");
 
     const validServices = ["nails", "eyelashes", "eyebrows"];
-    if (!service || !validServices.includes(service))
-        errors.push("Servicio inválido");
+    if (!service || !validServices.includes(service)) errors.push("Servicio inválido");
 
-    if (!formData.date) {validationErrors.push("Por favor, selecciona una fecha.");}
+
+    if (!date) {errors.push("Por favor, selecciona una fecha.");}
     
     const validTimes = [];
-    for (let hour = 8; hour <= 17; hour++) {
+    for (let hour = 8; hour <= 20; hour++) {
         const timeString = hour.toString().padStart(2, '0') + ':00';
         validTimes.push(timeString);
     }

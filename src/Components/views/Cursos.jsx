@@ -1,7 +1,21 @@
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import uñas from "../../assets/uñas1.jpg";
+import { useState, useEffect } from "react";
+import CardCurso from "./CardCurso";
+import FormInscripCurso from "./FormInscripCurso";
+import { obtenerCursos } from "../helpers/queries";
+
 const Cursos = () => {
+  const [curso, setCurso] = useState([]);
+
+  useEffect(()=>{
+    obtenerCursos().then((respuesta)=>{
+      if(respuesta){
+        setCurso(respuesta);
+      }else{
+        console.log("Se produhjo un error maca")
+      }
+
+    })
+  }, [])
   return (
     <section className="mainSection p-5">
       <h1 className="text-center fw-semibold mt-0 mb-3">Nuestros cursos</h1>
@@ -13,28 +27,19 @@ const Cursos = () => {
         facilis. Doloremque quos fugiat doloribus, aliquam sapiente quam atque
         repudiandae sunt asperiores corrupti? Nostrum totam laboriosam nulla
       </p>
-      <article>
-        <div className="container text-center">
+      <div className="container text-center">
           <div className="row">
-            <div className="col-sm-12 col-md-4">
-              <Card style={{ width: "16rem", border: "1px solid #FFD700" }} className="borde-card">
-                <Card.Img variant="top" src={uñas} />
-                <Card.Body className="bg-card-cursos ">
-                  <Card.Title className="fw-semibold">Manicura</Card.Title>
-                  <Card.Text>
-                    
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Card.Text>
-                  <Button size="lg" className="btn-cursos">Inscribirse</Button>
-                </Card.Body>
-              </Card>
-            </div>
-            <div className="col-sm-12 col-md-4"></div>
-            <div className="col-sm-12 col-md-4">Column</div>
+           {curso.map((curso) => (
+            <CardCurso key={curso.id} curso={curso}></CardCurso>
+          ))}
           </div>
         </div>
+          
+      
+      <article className="hola">
+       <FormInscripCurso></FormInscripCurso>  
       </article>
+     
     </section>
   );
 };

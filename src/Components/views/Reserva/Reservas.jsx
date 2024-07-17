@@ -6,40 +6,41 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 const Reservas = () => {
   const initialState = {
-    nombreApellido: '',
-    email: '',
-    phone: '',
-    service: '',
-    date: '',
-    time: ''
+    NombreApellido: '',
+    Email: '',
+    Telefono: '',
+    idServicio: '',
+    Dia: '',
+    Horario: ''
   };
 
   const [formData, setFormData] = useState(initialState);
   const [errors, setErrors] = useState([]);
-  const [disabledDates, setDisabledDate] = useState([]);
+  const [disabledDates, setDisabledDates] = useState([]);
+  const [reservas, setReservas] = useState([]);
+  const [clientes, setClientes] = useState([]);
 
-  //Solicitud al backend para obtener las fechas deshabilitadas
   useEffect(() => {
     const fetchDisabledDates = async () => {
-      try{
-        const rsp = await axios.get('http://localhost:3002/disabledDates'); //Cambiar cuando este lista la base de datos
-        if(rsp.status === 200){
+      try {
+        const rsp = await axios.get('http://localhost:3001/disabledDates'); // Cambiar cuando esté lista la base de datos
+        if (rsp.status === 200) {
           console.log('Fechas deshabilitadas obtenidas:', rsp.data);
-          const dates = [];
+          const Dias = [];
           rsp.data.forEach(item => {
-            dates.push(item.date);
+            Dias.push(item.Dia);
           });
-          setDisabledDate(dates);
+          setDisabledDates(Dias);
         }
-      } catch(error){
+      } catch (error) {
         console.error('Error al recuperar las fechas deshabilitadas', error);
       }
     };
     fetchDisabledDates();
   }, []);
 
-  const disableSundays = (date) => {
-    const day = date.getDay();
+  const disableSundays = (Dia) => {
+    const day = Dia.getDay();
     return day === 0;
   };
 
@@ -54,14 +55,14 @@ const Reservas = () => {
   const handleTimeChange = (selectedTimes) => {
     setFormData({
       ...formData,
-      time: selectedTimes[0]
+      Horario: selectedTimes[0] ? selectedTimes[0].toTimeString().split(' ')[0] : '' // HH:MM:SS
     });
   };
 
   const handleDateChange = (selectedDates) => {
     setFormData({
       ...formData,
-      date: selectedDates[0]
+      Dia: selectedDates[0] ? selectedDates[0].toISOString().split('T')[0] : '' // YYYY-MM-DD
     });
   };
 
@@ -69,18 +70,31 @@ const Reservas = () => {
     e.preventDefault();
     console.log('Reserva confirmada:', formData);
     try {
-      const response = await axios.post('http://localhost:3001/validateReservation', formData);
+      // Enviar datos del cliente y obtener el ID del cliente
+      const clienteResponse = await axios.post('https://kiara-studio-vercel.vercel.app/api/Clientes', {
+        NombreApellido: formData.NombreApellido,
+        Telefono: formData.Telefono,
+        Email: formData.Email
+      });
+      const idCliente = clienteResponse.data.id;
 
-      if (response.status === 200) {
-        console.log('Datos válidos:', response.data);
-        setErrors([])
-      }
+      // Enviar datos de la reserva junto con el ID del cliente
+      const reservaResponse = await axios.post('https://kiara-studio-vercel.vercel.app/api/Reservas', {
+        idCliente: idCliente,
+        idServicio: formData.idServicio,
+        Dia: formData.Dia,
+        Horario: formData.Horario
+      });
+
+      setClientes([...clientes, clienteResponse.data]);
+      setReservas([...reservas, reservaResponse.data]);
+
+      setFormData(initialState); // Limpiamos el formulario después de enviarlo
     } catch (error) {
       console.error('Error en la solicitud:', error);
+      setErrors([error.response?.data?.message || 'Error en la solicitud']);
     }
-    setFormData(initialState); // Limpiamos el formulario después de enviarlo
   };
-
 
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit}>
@@ -89,8 +103,8 @@ const Reservas = () => {
           Apellido y Nombre:
           <input
             type="text"
-            name="nombreApellido"
-            value={formData.nombreApellido}
+            name="NombreApellido"
+            value={formData.NombreApellido}
             onChange={handleChange}
             required
           />
@@ -101,8 +115,8 @@ const Reservas = () => {
           Correo Electrónico:
           <input
             type="email"
-            name="email"
-            value={formData.email}
+            name="Email"
+            value={formData.Email}
             onChange={handleChange}
             required
           />
@@ -113,8 +127,8 @@ const Reservas = () => {
           Número de Celular:
           <input
             type="tel"
-            name="phone"
-            value={formData.phone}
+            name="Telefono"
+            value={formData.Telefono}
             onChange={handleChange}
             pattern="[0-9]{10}"
             required
@@ -125,15 +139,16 @@ const Reservas = () => {
         <label>
           Tipo de servicio:
           <select
-            name="service"
-            value={formData.service}
+            name="idServicio"
+            value={formData.idServicio}
             onChange={handleChange}
             required
           >
             <option value=''>Seleccione el servicio</option>
-            <option value='nails'>Uñas</option>
-            <option value='eyelashes'>Pestañas</option>
-            <option value='eyebrows'>Cejas</option>
+            <option value='1'>Manicura y Pedicura</option>
+            <option value='2'>Lifting de pestañas</option>
+            <option value='3'>Tratamiento en cejas</option>
+            <option value='4'>Depilación Láser</option>
           </select>
         </label>
       </div>
@@ -142,14 +157,17 @@ const Reservas = () => {
           Día:
           <Flatpickr
             className={styles.flatpickrContainer}
-            value={formData.date}
+            value={formData.Dia}
             onChange={handleDateChange}
             options={{
               altInput: true,
               altFormat: "F j, Y",
               dateFormat: "Y-m-d",
               minDate: "today",
-              disable: [...disabledDates, disableSundays]
+              disable: [
+                ...disabledDates, 
+                disableSundays
+              ]
             }}
             required
           />
@@ -159,9 +177,9 @@ const Reservas = () => {
         <label>
           Hora:
           <Flatpickr
-          value={formData.time}
-          onChange={handleTimeChange}
-            options= {{
+            value={formData.Horario}
+            onChange={handleTimeChange}
+            options={{
               enableTime: true,
               noCalendar: true,
               minTime: "10:00",
@@ -169,27 +187,14 @@ const Reservas = () => {
             }}
             required
           />
-          {/* <select
-            name="time"
-            value={formData.time}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Seleccione una hora</option>
-            {Array.from({ length: 11 }, (_, index) => (
-              <option key={index + 10} value={`${index + 10}:00`}>
-                {`${index + 10}:00`}
-              </option>
-            ))}
-          </select> */}
         </label>
       </div>
       <div>
-        <button type="submit">Confirmar Reserva</button>
+      <button type="submit" name="confirmarReserva" className={styles.confirmarReservaButton}>Confirmar Reserva</button>
         {errors.length > 0 && (
           <ul>
-            {errors.map((error,index) => (
-              <li key={index} style={{color: 'red'}}>{error}</li>
+            {errors.map((error, index) => (
+              <li key={index} style={{ color: 'red' }}>{error}</li>
             ))}
           </ul>
         )}

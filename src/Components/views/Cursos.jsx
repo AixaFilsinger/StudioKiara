@@ -1,7 +1,21 @@
+import { useState, useEffect } from "react";
 import CardCurso from "./CardCurso";
 import FormInscripCurso from "./FormInscripCurso";
+import { obtenerCursos } from "../helpers/queries";
 
 const Cursos = () => {
+  const [curso, setCurso] = useState([]);
+
+  useEffect(()=>{
+    obtenerCursos().then((respuesta)=>{
+      if(respuesta){
+        setCurso(respuesta);
+      }else{
+        console.log("Se produhjo un error maca")
+      }
+
+    })
+  }, [])
   return (
     <section className="mainSection p-5">
       <h1 className="text-center fw-semibold mt-0 mb-3">Nuestros cursos</h1>
@@ -13,7 +27,15 @@ const Cursos = () => {
         facilis. Doloremque quos fugiat doloribus, aliquam sapiente quam atque
         repudiandae sunt asperiores corrupti? Nostrum totam laboriosam nulla
       </p>
-      <CardCurso></CardCurso>
+      <div className="container text-center">
+          <div className="row">
+           {curso.map((curso) => (
+            <CardCurso key={curso.id} curso={curso}></CardCurso>
+          ))}
+          </div>
+        </div>
+          
+      
       <article className="hola">
        <FormInscripCurso></FormInscripCurso>  
       </article>

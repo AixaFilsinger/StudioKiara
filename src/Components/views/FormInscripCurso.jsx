@@ -1,6 +1,10 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
+import { consultaCrearInscripcion, obtenerCursos } from '../helpers/queries';
+import Swal from "sweetalert2";
+import { useEffect, useState } from 'react';
+
 
 const FormInscripCurso = () => {
     const {
@@ -9,10 +13,49 @@ const FormInscripCurso = () => {
         formState: { errors },
         reset,
       } = useForm();
+
+      const [curso, setCurso] = useState([]);
+
+  useEffect(()=>{
+    obtenerCursos().then((respuesta)=>{
+      if(respuesta){
+        setCurso(respuesta);
+      }else{
+        console.log("Se produhjo un error maca")
+      }
+
+    })
+  }, [])
+
+      const onSubmit = (inscripNueva) => {
+        //realizar la peticion que agregue la receta a la API
+        consultaCrearInscripcion(inscripNueva).then((respuesta) => {
+          console.log(respuesta)
+          if (respuesta && respuesta.message === "Ya existe una inscripcion igual") {
+            Swal.fire("Error", "Ya existe una inscripcion con ese nombre", "error");
+          } else if ( respuesta && respuesta.id) {
+            Swal.fire(
+              "Solicitud Enviada",
+              `Kiara Studio se comunicara en breve `,
+              "success"
+            );
+            reset();
+          } else {
+            Swal.fire(
+              "Error",
+              `Intente realizar esta operacion mas tarde`,
+              "error"
+            );
+          }
+        });
+        reset();
+      };
+
+
     
   return (
     <section className="formCursosContainer">
-       <Form>
+       <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Group className="mb-3" controlId="formnombre">
         <Form.Label>nombre y Apellido</Form.Label>
         <Form.Control type="text" placeholder="Ej:Aixa Filsinger" {...register("nombreyapellido", {
@@ -41,8 +84,11 @@ const FormInscripCurso = () => {
             {...register("curso", { required: "Debe elegir una opcion" })}
           >
             <option value="">Seleccione una Categoria</option>
-            <option value="Manicura">Manicura</option>
-            
+            {curso.map((curso) => (
+          <option key={curso.id} value={curso.id}>
+            {curso.nombrecurso}
+          </option>
+        ))}
           </Form.Select>
           <Form.Text className="text-danger">
             {errors.curso?.message}
@@ -65,7 +111,12 @@ const FormInscripCurso = () => {
       </Form.Group>
       <Form.Group className="mb-3" controlId="formCelular">
         <Form.Label>Celular</Form.Label>
-        <Form.Control type="number" placeholder="Ej:3813976548" />
+        <Form.Control type="number" placeholder="Ej:3813976548" {...register("celular",{
+            required:"Este campo es obligatorio"
+        })} />
+        <Form.Text className="text-danger">
+            {errors.celular?.message}
+          </Form.Text>
       </Form.Group>
       
       <Button variant="primary" type="submit">

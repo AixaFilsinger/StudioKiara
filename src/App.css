@@ -225,3 +225,11 @@
   display: flex;
   justify-content: center;
 }
+
+.error404{
+  width: 100vh;
+  height: 110vh;
+  display: flex;
+  justify-content: center;
+
+}

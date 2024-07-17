@@ -1,142 +1,235 @@
-@font-face 
-{
+@font-face {
   font-family: altaRegularFont;
   src: url(./assets/Alta_regular.otf);
 }
 
 @font-face {
-    font-family: Britanny;
+  font-family: Britanny;
   src: url(./assets/BrittanySignature.ttf);
 }
 
-*{
-    font-family: altaRegularFont;
+* {
+  font-family: altaRegularFont;
+}
+
+/* General styles */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mainSection {
+  flex-grow: 1;
+  background-color: #f0f0e5;
+}
+
+/* Logo styling */
+.logo {
+  width: 80px;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Navbar styling */
+.nav {
+  background-color: #FFFFFF;
+  background-image: linear-gradient(77deg, #FFFFFF 22%, #fde6de 62%, #fbcfc4 100%);
+  font-weight: bold;
+}
+
+/* Responsive adjustments for Navbar */
+.navbar-nav .nav-link {
+  margin-right: 1rem;
+}
+
+.navbar-nav .btn {
+  margin-left: 0.5rem;
+}
+
+/* Ensure the collapsed menu looks good */
+@media (max-width: 991px) {
+  .navbar-nav {
+    text-align: center;
   }
 
-  #root{
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  .navbar-nav .nav-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .navbar-nav .btn {
+    margin-top: 0.5rem;
+  }
 }
 
-.mainSection{
-    flex-grow: 1;
+/* Banner styling */
+.banner {
+  width: 100%;
+  margin-top: 0;
+  height: 400px;
+  object-fit: cover;
 }
 
-.logo{
-    width: 80px;
-    height: auto;
-    object-fit: cover;
-    
-   
-}
-.nav{
-  /*  background-color: #FFFFFF;
-background-image: linear-gradient(77deg, #FFFFFF 0%, #fde6de 50%, #fbcfc4 100%);*/
-background-color: #FFFFFF;
-background-image: linear-gradient(77deg, #FFFFFF 22%, #fde6de 62%, #fbcfc4 100%);
-font-weight: bold;
-}
-.banner{
-    width: 100%;
-    margin-top: 0;
-    height: 400px;
-    object-fit: cover;
-}
+
 
 /*INICIO*/
 
-.tituloInicio{
-    font-family: Britanny;
+.tituloInicio {
+  font-family: Britanny;
 }
 
 /*Footer*/
 .footer {
-  
-    display: flex;
-    flex-direction: column; /* Asegura que los elementos hijos se apilen verticalmente */
-  }
 
-#infoFooter{
+  display: flex;
+  flex-direction: column;
+  /* Asegura que los elementos hijos se apilen verticalmente */
+}
+
+#infoFooter {
 
   font-family: Britanny;
   background-color: #FFFFFF;
   background-image: linear-gradient(77deg, #FFFFFF 22%, #fde6de 62%, #fbcfc4 100%);
-  
+
 
 }
+
+.title-main {
+
+  text-align: center;
+  /* Centra el texto horizontalmente */
+  margin-top: 50px;
+  /* Agrega un margen superior para separarlo de las cards */
+  height: 455px;
+}
+
+.title-main h2 {
+  font-size: 50px;
+  font-family: Britanny;
+}
+
+.title-main .subtitle {
+  position: relative;
+  top: 30px;
+  font-family: cursive;
+  font-size: 16px;
+  /* Tamaño del subtítulo */
+  color: black;
+  /* Color del subtítulo */
+}
+
+.title-main .minisub {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color-scheme: #666;
+  padding: 10px;
+}
+
+.logotipo {
+  max-width: 150px;
+  /* Define el tamaño máximo de la imagen */
+  margin-top: 5px;
+}
+
+.downFooter {
+  background-color: fbcfc4;
+}
+
+@media (max-width: 768px) {
   .title-main {
-    
-    text-align: center; /* Centra el texto horizontalmente */
-    margin-top: 50px; /* Agrega un margen superior para separarlo de las cards */
-    height: 455px;
-  }
-  
-  .title-main h2 {
-    font-size: 50px;
-    font-family: Britanny;
-  }
-  
-  .title-main .subtitle {
-    position: relative;
-    top: 30px;
-    font-family: cursive;
-    font-size: 16px; /* Tamaño del subtítulo */
-    color: black; /* Color del subtítulo */
+    height: 500px;
   }
 
-  .title-main .minisub{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    color-scheme: #666;
-    padding: 10px;
-  }
+}
 
-  .logotipo{
-    max-width: 150px; /* Define el tamaño máximo de la imagen */
-    margin-top: 5px;
-  }
-  .downFooter{
-    background-color: fbcfc4;
-  }
+/*Card INICIO*/
 
-  /*Card INICIO*/
+.pInicio {
+  font-family: cursive;
+  font-size: 17px;
 
-  .custom-card {
-    width: calc(100%); /* Ajustar el ancho de las tarjetas y reducir el margen */
-    margin-bottom: 50px; /* Reducir el margen inferior entre las tarjetas */
-    background-color: #000 !important;
-    color: white !important;
-    transition: transform 0.3s ease;
-    border: none;
-    border-radius: none;
-  }
-  
-  .custom-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  
-  
-  .custom-card .card-img-overlay {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    text-align: center;
-  }
-  
-  .custom-card .card-title {
-    font-family: Britanny;
-    font-size: 55px;
-    margin-bottom: 10px; /* Reducir el margen inferior del título */
-  }
-  
-  .custom-card .card-text {
-    font-family:cursive;
-    font-size: 15px;
-    margin: 0 10px;
-    text-align: center;
-    text-decoration: black;
-  }
+}
+
+.custom-card {
+  width: calc(100%);
+  /* Ajustar el ancho de las tarjetas y reducir el margen */
+  margin-bottom: 50px;
+  /* Reducir el margen inferior entre las tarjetas */
+  background-color: #000 !important;
+  color: white !important;
+  transition: transform 0.3s ease;
+  border: none;
+  border-radius: none;
+}
+
+.custom-card:hover {
+  transform: translateY(-5px);
+}
+
+
+
+.custom-card .card-img-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.custom-card .card-title {
+  font-family: Britanny;
+  font-size: 55px;
+  margin-bottom: 10px;
+  /* Reducir el margen inferior del título */
+}
+
+.custom-card .card-text {
+  font-family: cursive;
+  font-size: 15px;
+  margin: 0 10px;
+  text-align: center;
+  text-decoration: black;
+}
+
+/*CURSOS*/
+.borde-card {
+  border: 12px solid red; /* Cambia el color y ancho del borde aquí */
+}
+
+.bg-card-cursos{
+ background-color: #f8c1d4;
+}
+.texto-curso{
+  color: #4A4A4A;
+}
+.btn-cursos{
+  background-color: #E91E63 !important;
+  border: 0px !important;
+  transition: background-color 0.3s ease;
+
+}
+.btn-cursos:hover {
+  background-color: #f8c1d4 !important; /* Cambia a un tono más oscuro de rosa al hacer hover */
+  color: #4A4A4A !important;
+}
+
+.formCursosContainer{
+  width: 400px;
+  height: auto;
+  border: 2px solid red;
+}
+
+.hola{
+  display: flex;
+  justify-content: center;
+}
+
+.error404{
+  width: 100vh;
+  height: 110vh;
+  display: flex;
+  justify-content: center;
+
+}

@@ -21,7 +21,7 @@
 
 .mainSection {
   flex-grow: 1;
-  background-color: #fbfbce;
+  background-color: #f0f0e5;
 }
 
 /* Logo styling */
@@ -211,5 +211,17 @@
 
 }
 .btn-cursos:hover {
-  background-color: #ffff; /* Cambia a un tono más oscuro de rosa al hacer hover */
+  background-color: #f8c1d4 !important; /* Cambia a un tono más oscuro de rosa al hacer hover */
+  color: #4A4A4A !important;
+}
+
+.formCursosContainer{
+  width: 400px;
+  height: auto;
+  border: 2px solid red;
+}
+
+.hola{
+  display: flex;
+  justify-content: center;
 }

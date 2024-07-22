@@ -40,7 +40,7 @@ const Menu = ({ showModal }) => {
             <NavLink end className="nav-item nav-link" to={"/nosotros"} onClick={closeNavbar}>
               Nosotros
             </NavLink>
-            <NavLink end className={"nav-item nav-link"} to={"/Reservas/*"} onClick={closeNavbar}>
+            <NavLink end className={"nav-item nav-link"} to={"/Reservas"} onClick={closeNavbar}>
               Reservas
             </NavLink>
 

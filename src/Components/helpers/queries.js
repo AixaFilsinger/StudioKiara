@@ -39,3 +39,50 @@ export const consultaCrearInscripcion = async (inscripcion)=>{
         
     }
 }
+export const obtenerClientes = async ()=>{
+    try {
+
+        const respuesta = await axios.get(url_clientes);
+        const listaClientes = respuesta.data
+        return listaClientes;
+        
+    } catch (error) {
+        console.log(error);
+        return null
+        
+    }
+
+}
+export const consultaCrearClientes = async (cliente)=>{
+    try {
+        const respuesta = await axios.request({
+            url:url_clientes ,
+            method: `POST`,
+            headers: {
+                "Content-Type": "application/json"
+            },
+          data: {cliente}
+        }
+        )
+      return respuesta.data
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+export const obtenerServicios = async ()=>{
+    try {
+
+        const respuesta = await axios.get(url_servicios);
+        const listaServicios = respuesta.data
+        return listaServicios;
+        
+    } catch (error) {
+        console.log(error);
+        return null
+        
+    }
+
+}

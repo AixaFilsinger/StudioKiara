@@ -1,51 +1,37 @@
-import React from 'react';
-import uñas from '../../assets/uñass.jpg';
-
-
-
-const Card = ({ imageUrl, title, description }) => {
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  return (
-    <div className="card">
-      <img src={imageUrl} className="card-img-top" alt="..." onClick={openModal} />
-      <div className="card-title">
-        <h5>{title}</h5>
-      </div>
-      {modalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeModal}>&times;</span>
-            <p>{description}</p>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
+import { useEffect, useState } from "react";
+import CardServicio from "./CardServicio";
+import { obtenerServicios } from "../helpers/queries";
+import { Link } from "react-router-dom";
 
 const Servicios = () => {
-  const cards = [
-    { id: 1, imageUrl: {uñas}, title: 'Card 1', description: 'Description for Card 1' },
-    { id: 2, imageUrl: {uñas}, title: 'Card 2', description: 'Description for Card 2' },
-    { id: 3, imageUrl: {uñas}, title: 'Card 3', description: 'Description for Card 3' },
-    { id: 4, imageUrl: {uñas}, title: 'Card 4', description: 'Description for Card 4' },
-  ];
+  const [servicio, setServicio] = useState([]);
 
+  useEffect(() => {
+    obtenerServicios().then((respuesta) => {
+      if (respuesta) {
+        setServicio(respuesta);
+      } else {
+        console.log("Se produjo un error maca");
+      }
+    });
+  }, []);
   return (
-    <div className="cards-container">
-      {cards.map(card => (
-        <Card key={card.id} imageUrl={card.imageUrl} title={card.title} description={card.description} />
-      ))}
-    </div>
+    <section className="mainSection">
+      <h1 className="text-center mt-5 h1Servicios">Nuestros Servicios</h1>
+      <p className="text-center">
+        Si desea sacar un turno en alguno de nuestros servicios, por favor
+        presione sobre la imagen
+      </p>
+
+      <article className="ConteinerCards mt-3 mb-5">
+        {servicio.map((servicio) => (
+          <Link to={"/Reservas"}>
+            {" "}
+            <CardServicio key={servicio.id} servicio={servicio}></CardServicio>
+          </Link>
+        ))}
+      </article>
+    </section>
   );
 };
 

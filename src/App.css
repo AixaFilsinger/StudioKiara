@@ -233,3 +233,82 @@
   justify-content: center;
 
 }
+
+
+/*---------------------------SERVICIOS----------------------------*/
+
+.ConteinerCards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardServicios {
+  position: relative;
+  width: 300px;
+  height: 350px;
+  perspective: 1000px; /* Añadir perspective al contenedor */
+}
+
+.cardServicios .face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.cardServicios .front {
+  transform: rotateY(0deg);
+  box-shadow: 0 5px 10px #000;
+}
+
+.cardServicios .front .img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardServicios .front h3 {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.cardServicios .back {
+  transform: rotateY(180deg);
+  background-color: #E91E63;
+  padding: 15px;
+  color: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  box-shadow: 0 5px 10px #000;
+}
+
+.cardServicios .back h3 {
+  font-size: 30px;
+  margin-top: 20px;
+  letter-spacing: 2px;
+}
+
+.cardServicios .back p {
+  letter-spacing: 1px;
+}
+
+.cardServicios:hover .front {
+  transform: rotateY(180deg);
+}
+
+.cardServicios:hover .back {
+  transform: rotateY(360deg);
+}

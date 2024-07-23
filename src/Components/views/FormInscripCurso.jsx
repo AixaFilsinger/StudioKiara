@@ -1,12 +1,13 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useForm } from 'react-hook-form';
-import { consultaCrearInscripcion, obtenerCursos } from '../helpers/queries';
+import { consultaCrearInscripcion, obtenerClientes, obtenerCursos } from '../helpers/queries';
 import Swal from "sweetalert2";
 import { useEffect, useState } from 'react';
 
 
 const FormInscripCurso = () => {
+  const [clientes, setClientes]= useState([]);
     const {
         register,
         handleSubmit,
@@ -28,6 +29,17 @@ const FormInscripCurso = () => {
   }, [])
 
       const onSubmit = (inscripNueva) => {
+        obtenerClientes().then((respuesta)=>{
+           if(respuesta){
+            setClientes(respuesta)
+            return setClientes(respuesta)
+           }else{
+            console.log("se produjo un error")
+           }
+        })
+        if(obtenerClientes()===inscripNueva){
+          
+        }
         //realizar la peticion que agregue la receta a la API
         consultaCrearInscripcion(inscripNueva).then((respuesta) => {
           console.log(respuesta)
@@ -51,7 +63,86 @@ const FormInscripCurso = () => {
         reset();
       };
 
+{/*
+  const [clientes, setClientes] = useState([]);
+  const [cursos, setCursos] = useState([]);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  useEffect(() => {
+    obtenerCursos().then((respuesta) => {
+      if (respuesta) {
+        setCursos(respuesta);
+      } else {
+        console.log("Se produjo un error al obtener los cursos");
+      }
+    });
+
+    obtenerClientes().then((respuesta) => {
+      if (respuesta) {
+        setClientes(respuesta);
+      } else {
+        console.log("Se produjo un error al obtener los clientes");
+      }
+    });
+  }, []);
+
+  const onSubmit = async (inscripNueva) => {
+    try {
+      const clienteExistente = clientes.find(
+        (cliente) => cliente.email === inscripNueva.email
+      );
+
+      let clienteId;
+      if (clienteExistente) {
+        clienteId = clienteExistente.id;
+      } else {
+        const nuevoCliente = {
+          nombreyapellido: inscripNueva.nombreyapellido,
+          email: inscripNueva.email,
+          celular: inscripNueva.celular,
+        };
+
+        const respuestaCliente = await consultaCrearCliente(nuevoCliente);
+        if (respuestaCliente && respuestaCliente.id) {
+          clienteId = respuestaCliente.id;
+        } else {
+          throw new Error('Error al crear el cliente');
+        }
+      }
+
+      const nuevaInscripcion = {
+        clienteid: clienteId,
+        cursosid: inscripNueva.curso,
+      };
+
+      const respuestaInscripcion = await consultaCrearInscripcion(nuevaInscripcion);
+      if (respuestaInscripcion && respuestaInscripcion.message === "Ya existe una inscripcion igual") {
+        Swal.fire("Error", "Ya existe una inscripción con esos datos", "error");
+      } else if (respuestaInscripcion && respuestaInscripcion.inscripcionid) {
+        Swal.fire(
+          "Solicitud Enviada",
+          `Kiara Studio se comunicará en breve`,
+          "success"
+        );
+        reset();
+      } else {
+        throw new Error('Error al crear la inscripción');
+      }
+    } catch (error) {
+      Swal.fire(
+        "Error",
+        `Intente realizar esta operación más tarde. Error: ${error.message}`,
+        "error"
+      );
+    }
+  };
+  */ }
     
   return (
     <section className="formCursosContainer">

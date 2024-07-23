@@ -239,15 +239,18 @@
 
 .ConteinerCards {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap; /* Permite que las tarjetas se envuelvan a la siguiente fila */
+  justify-content: center; /* Distribuye el espacio equitativamente entre las tarjetas */
+  gap: 20px; /* Espaciado entre las tarjetas */
 }
 
 .cardServicios {
   position: relative;
-  width: 300px;
-  height: 350px;
+  width: 300px; /* Ancho fijo */
+  height: 350px; /* Alto fijo */
   perspective: 1000px; /* Añadir perspective al contenedor */
+  box-sizing: border-box; /* Incluye el padding y el border en el ancho y alto total de los elementos */
+  margin: 10px; /* Espaciado entre las tarjetas */
 }
 
 .cardServicios .face {
@@ -312,3 +315,21 @@
 .cardServicios:hover .back {
   transform: rotateY(360deg);
 }
+
+/* Para pantallas más pequeñas */
+@media (max-width: 1024px) {
+  .ConteinerCards {
+    justify-content: center; /* Centrar las tarjetas */
+  }
+  .cardServicios {
+    width: 45%; /* Dos tarjetas por fila en pantallas medianas */
+  }
+}
+
+@media (max-width: 768px) {
+  .cardServicios {
+    width: 100%; /* Una tarjeta por fila en pantallas pequeñas */
+  }
+}
+
+

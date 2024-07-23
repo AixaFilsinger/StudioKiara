@@ -14,6 +14,7 @@ const Inicio = () => {
             <aside className='text-center display-3 mt-md-5'>
                 <p className='tituloInicio p-4'>~Somos una estética llena de amor y felicidad~</p>
             </aside>
+            <CardInicio></CardInicio>
             <Container>
                 <Row className='text-center'>
                     <Col md={6} className='mb-3'>
@@ -42,7 +43,7 @@ const Inicio = () => {
                 </Row>
 
             </Container>
-            <CardInicio></CardInicio>
+           
 
 
         </section>

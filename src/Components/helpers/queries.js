@@ -71,3 +71,18 @@ export const consultaCrearClientes = async (cliente)=>{
         
     }
 }
+
+export const obtenerServicios = async ()=>{
+    try {
+
+        const respuesta = await axios.get(url_servicios);
+        const listaServicios = respuesta.data
+        return listaServicios;
+        
+    } catch (error) {
+        console.log(error);
+        return null
+        
+    }
+
+}

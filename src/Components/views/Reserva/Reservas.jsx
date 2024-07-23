@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Container, Card, Spinner, Alert, Button, Form } from 'react-bootstrap';
+import ContactUs from './ContactUs';
 
 const Reservas = () => {
   const [servicios, setServicios] = useState([]);
@@ -16,6 +17,8 @@ const Reservas = () => {
     Telefono: '',
     Email: ''
   });
+
+  const [emailData, setEmailData] = useState(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -43,7 +46,7 @@ const Reservas = () => {
         Email: formData.Email
       });
       console.log('Respuesta del servidor al crear cliente:', response.data);
-      return response.data.id; // Cambiar a response.data.id
+      return response.data.id;
     } catch (error) {
       console.error('Error al crear o buscar el cliente:', error);
       throw new Error('Error al crear o buscar el cliente.');
@@ -60,7 +63,7 @@ const Reservas = () => {
     }
 
     try {
-      // Obtener el id del cliente (si no existe, se crea uno nuevo)
+
       const idcliente = await getClientId();
       console.log('idcliente obtenido:', idcliente);
 
@@ -78,6 +81,13 @@ const Reservas = () => {
       console.log('Respuesta del servidor:', response);
 
       setSuccessMessage('Reserva guardada exitosamente.');
+      setEmailData({
+        to_name: formData.nombreCliente,
+        from_name: 'Kiara Studio',
+        idServicio: formData.idServicio,
+        Dia: formData.Dia,
+        Horario: formData.Horario
+      });
       await fetchData();
       resetForm();
       setError(null);
@@ -194,6 +204,15 @@ const Reservas = () => {
           </Form>
         </Card.Body>
       </Card>
+      {emailData && (
+        <ContactUs
+          to_name={emailData.to_name}
+          from_name={emailData.from_name}
+          idServicio={servicios.idServicio}
+          Dia={emailData.Dia}
+          Horario={emailData.Horario}
+        />
+      )}
     </Container>
   );
 };

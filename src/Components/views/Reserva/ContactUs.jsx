@@ -1,9 +1,7 @@
-// ContactUs.jsx
-
 import React, { useRef, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 
-const ContactUs = ({ to_name, from_name, Dia, Horario }) => {
+const ContactUs = ({ to_name, from_name, Servicio, Dia, Horario }) => {
     const form = useRef();
 
     useEffect(() => {
@@ -27,6 +25,7 @@ const ContactUs = ({ to_name, from_name, Dia, Horario }) => {
         <form ref={form} style={{ display: 'none' }}>
             <input type="text" name="to_name" value={to_name} readOnly />
             <input type="text" name="from_name" value={from_name} readOnly />
+            <input type="text" name="Servicio" value={Servicio} readOnly />
             <input type="text" name="Dia" value={Dia} readOnly />
             <input type="text" name="Horario" value={Horario} readOnly />
         </form>

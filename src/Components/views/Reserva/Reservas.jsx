@@ -8,7 +8,7 @@ const Reservas = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [formData, setFormData] = useState({
-    idCliente: '',
+
     nombreCliente: '',
     idServicio: '',
     Dia: '',
@@ -28,20 +28,22 @@ const Reservas = () => {
       setLoading(false);
     }
   }, []);
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   const getClientId = async () => {
     try {
-      // Crear o buscar el cliente
+
       const response = await axios.post('https://kiara-studio-vercel.vercel.app/api/clientes', {
-        idCliente: formData.idCliente,
+
         NombreApellido: formData.nombreCliente,
         Telefono: formData.Telefono,
         Email: formData.Email
       });
-      return response.data.idCliente;  // Asegúrate de que el backend devuelva idCliente
+      console.log('Respuesta del servidor al crear cliente:', response.data);
+      return response.data.id; // Cambiar a response.data.id
     } catch (error) {
       console.error('Error al crear o buscar el cliente:', error);
       throw new Error('Error al crear o buscar el cliente.');
@@ -58,9 +60,12 @@ const Reservas = () => {
     }
 
     try {
+      // Obtener el id del cliente (si no existe, se crea uno nuevo)
+      const idcliente = await getClientId();
+      console.log('idcliente obtenido:', idcliente);
 
       const data = {
-        idCliente: formData.idCliente,
+        idCliente: idcliente,
         idServicio: formData.idServicio,
         Dia: formData.Dia,
         Horario: formData.Horario
@@ -84,7 +89,7 @@ const Reservas = () => {
 
   const resetForm = () => {
     setFormData({
-      idCliente: '',
+
       nombreCliente: '',
       idServicio: '',
       Dia: '',

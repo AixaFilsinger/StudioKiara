@@ -43,12 +43,9 @@ const Menu = ({ showModal }) => {
             <NavLink end className={"nav-item nav-link"} to={"/Reservas"} onClick={closeNavbar}>
               Reservas
             </NavLink>
-
-
-            <button type="button" className="btn btn-primary" onClick={showModal}>
+            <NavLink end className={"nav-item nav-link"} to={"/login"} onClick={showModal}>
               Login
-            </button>
-
+            </NavLink>
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -1,49 +1,53 @@
-/* Reserva.module.css */
 .formContainer {
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    text-align: center;
-  }
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  text-align: center;
+}
 
-  .flatpickrContainer {
-    width: 95%;
-  }
-  
-  .formGroup {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input, select {
-    width: calc(100% - 16px);
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  button {
-    width: 100%;
-    padding: 10px 0;
-    color: black;
-    background-color: #fbcfc4;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #fabfbf;
-  }
+.flatpickrContainer {
+  width: 95%;
+}
 
- 
+.formGroup {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input, select {
+  width: calc(100% - 16px);
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Clase específica para el botón "Crear Reserva" */
+.createReservationButton {
+  width: 100%;
+  padding: 10px 0;
+  color: black;
+  background-color: #fbcfc4;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.createReservationButton:hover {
+  background-color: #fbcfc4;
+}
+.createReservationButton:focus,
+.createReservationButton:active {
+    background-color: #fbcfc4; /* Mantiene el color al hacer clic */
+    outline: none; /* Remueve el contorno predeterminado del navegador */
+    box-shadow: none; /* Remueve el efecto de sombra al hacer clic */
+}

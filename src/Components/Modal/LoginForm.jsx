@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../Firebase/Firebase';
 import { useNavigate } from 'react-router-dom';
+import './LoginForm.css';
 
 const LoginForm = ({ handleClose }) => {
     const [email, setEmail] = useState('');
@@ -44,7 +45,7 @@ const LoginForm = ({ handleClose }) => {
                     />
                 </div>
                 {error && <p style={{ color: 'red' }}>{'ERROR: Usuario inexistente'}</p>}
-                <button type="submit" className="btn btn-primary">Login</button>
+                <button type="submit" className="btn btn-primary custom-btn">Ingresar</button>
             </form>
         </div>
     );

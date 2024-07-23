@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Container, Card, Spinner, Alert, Button, Form } from 'react-bootstrap';
 import ContactUs from './ContactUs';
+import styles from './Reserva.module.css';
 
 const Reservas = () => {
   const [servicios, setServicios] = useState([]);
@@ -196,7 +197,7 @@ const Reservas = () => {
                 required
               />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button className={styles.createReservationButton} type="submit">
               Crear Reserva
             </Button>
           </Form>

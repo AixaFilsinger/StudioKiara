@@ -9,7 +9,6 @@ const Reservas = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [formData, setFormData] = useState({
-
     nombreCliente: '',
     idServicio: '',
     Dia: '',
@@ -38,9 +37,7 @@ const Reservas = () => {
 
   const getClientId = async () => {
     try {
-
       const response = await axios.post('https://kiara-studio-vercel.vercel.app/api/clientes', {
-
         NombreApellido: formData.nombreCliente,
         Telefono: formData.Telefono,
         Email: formData.Email
@@ -56,14 +53,12 @@ const Reservas = () => {
   const handleSave = async (e) => {
     e.preventDefault();
 
-    // Verificar campos requeridos
     if (!formData.nombreCliente || !formData.idServicio || !formData.Dia || !formData.Horario || !formData.Telefono || !formData.Email) {
       setError('Todos los campos son requeridos.');
       return;
     }
 
     try {
-
       const idcliente = await getClientId();
       console.log('idcliente obtenido:', idcliente);
 
@@ -80,11 +75,15 @@ const Reservas = () => {
 
       console.log('Respuesta del servidor:', response);
 
+      // Obtener nombre del servicio
+      const selectedServicio = servicios.find(servicio => servicio.idservicio === parseInt(formData.idServicio));
+      const nombreServicio = selectedServicio ? selectedServicio.nombreservicio : 'Servicio no encontrado';
+
       setSuccessMessage('Reserva guardada exitosamente.');
       setEmailData({
         to_name: formData.nombreCliente,
         from_name: 'Kiara Studio',
-        idServicio: formData.idServicio,
+        NombreServicio: nombreServicio,
         Dia: formData.Dia,
         Horario: formData.Horario
       });
@@ -99,7 +98,6 @@ const Reservas = () => {
 
   const resetForm = () => {
     setFormData({
-
       nombreCliente: '',
       idServicio: '',
       Dia: '',
@@ -208,7 +206,7 @@ const Reservas = () => {
         <ContactUs
           to_name={emailData.to_name}
           from_name={emailData.from_name}
-          idServicio={servicios.idServicio}
+          NombreServicio={emailData.NombreServicio}
           Dia={emailData.Dia}
           Horario={emailData.Horario}
         />

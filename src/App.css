@@ -217,8 +217,9 @@
 
 .formCursosContainer{
   width: 400px;
+  padding: 20px;
   height: auto;
-  border: 2px solid red;
+  border: 1px solid #FFD700;
 }
 
 .hola{
@@ -235,22 +236,23 @@
 }
 
 
-/*---------------------------SERVICIOS----------------------------*/
 
+/*---------------------------SERVICIOS----------------------------*/
 .ConteinerCards {
   display: flex;
-  flex-wrap: wrap; /* Permite que las tarjetas se envuelvan a la siguiente fila */
-  justify-content: center; /* Distribuye el espacio equitativamente entre las tarjetas */
-  gap: 20px; /* Espaciado entre las tarjetas */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 0 auto;
 }
 
 .cardServicios {
   position: relative;
-  width: 300px; /* Ancho fijo */
-  height: 350px; /* Alto fijo */
-  perspective: 1000px; /* Añadir perspective al contenedor */
-  box-sizing: border-box; /* Incluye el padding y el border en el ancho y alto total de los elementos */
-  margin: 10px; /* Espaciado entre las tarjetas */
+  width: 300px;
+  height: 350px;
+  perspective: 1000px;
+  box-sizing: border-box;
+  margin: 10px;
 }
 
 .cardServicios .face {
@@ -288,7 +290,7 @@
 
 .cardServicios .back {
   transform: rotateY(180deg);
-  background-color: #E91E63;
+  background-color: #e91e63;
   padding: 15px;
   color: #f3f3f3;
   display: flex;
@@ -319,17 +321,15 @@
 /* Para pantallas más pequeñas */
 @media (max-width: 1024px) {
   .ConteinerCards {
-    justify-content: center; /* Centrar las tarjetas */
+    justify-content: center;
   }
   .cardServicios {
-    width: 45%; /* Dos tarjetas por fila en pantallas medianas */
+    width: calc(50% - 40px); /* Dos tarjetas por fila en pantallas medianas */
   }
 }
 
 @media (max-width: 768px) {
   .cardServicios {
-    width: 100%; /* Una tarjeta por fila en pantallas pequeñas */
+    width: calc(100% - 40px); /* Una tarjeta por fila en pantallas pequeñas */
   }
 }
-
-

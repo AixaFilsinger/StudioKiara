@@ -2,7 +2,9 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import uñas from "../../assets/uñas1.jpg";
 
-const CardCurso = ({curso}) => {
+
+const CardCurso = ({curso, setModalShow}) => {
+  
     return (
         
          <div className="col-sm-12 col-md-4 mb-3">
@@ -15,7 +17,7 @@ const CardCurso = ({curso}) => {
                Some quick example text to build on the card title and make
                up the bulk of the card's content.
              </Card.Text>
-             <Button size="lg" className="btn-cursos">Inscribirse</Button>
+             <Button size="lg" className="btn-cursos" onClick={() => setModalShow(true)}>Inscribirse</Button>
            </Card.Body>
          </Card>
        </div>

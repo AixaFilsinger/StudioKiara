@@ -1,11 +1,38 @@
-import React from 'react';
+import { useEffect, useState } from "react";
+import CardServicio from "./CardServicio";
+import { obtenerServicios } from "../helpers/queries";
+import { Link } from "react-router-dom";
 
 const Servicios = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+  const [servicio, setServicio] = useState([]);
+
+  useEffect(() => {
+    obtenerServicios().then((respuesta) => {
+      if (respuesta) {
+        setServicio(respuesta);
+      } else {
+        console.log("Se produjo un error maca");
+      }
+    });
+  }, []);
+  return (
+    <section className="mainSection">
+      <h1 className="text-center mt-5 h1Servicios">Nuestros Servicios</h1>
+      <p className="text-center">
+        Si desea sacar un turno en alguno de nuestros servicios, por favor
+        presione sobre la imagen
+      </p>
+
+      <article className="ConteinerCards mt-3 mb-5">
+        {servicio.map((servicio) => (
+          <Link to={"/Reservas"}>
+            {" "}
+            <CardServicio key={servicio.id} servicio={servicio}></CardServicio>
+          </Link>
+        ))}
+      </article>
+    </section>
+  );
 };
 
 export default Servicios;

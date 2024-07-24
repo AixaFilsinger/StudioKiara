@@ -5,6 +5,7 @@ import { obtenerCursos } from "../helpers/queries";
 
 const Cursos = () => {
   const [curso, setCurso] = useState([]);
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(()=>{
     obtenerCursos().then((respuesta)=>{
@@ -30,14 +31,15 @@ const Cursos = () => {
       <div className="container text-center">
           <div className="row">
            {curso.map((curso) => (
-            <CardCurso key={curso.id} curso={curso}></CardCurso>
+            <CardCurso key={curso.id} curso={curso} setModalShow= {setModalShow}></CardCurso>
           ))}
           </div>
         </div>
           
       
       <article className="hola">
-       <FormInscripCurso></FormInscripCurso>  
+       <FormInscripCurso show={modalShow}
+        onHide={() => setModalShow(false)}></FormInscripCurso>  
       </article>
      
     </section>

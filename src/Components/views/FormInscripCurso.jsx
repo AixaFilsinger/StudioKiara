@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import { consultaCrearInscripcion, obtenerClientes, obtenerCursos } from '../helpers/queries';
 import Swal from "sweetalert2";
 import { useEffect, useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
 
-
-const FormInscripCurso = () => {
+const FormInscripCurso = ({show, onHide}) => {
   const [clientes, setClientes]= useState([]);
     const {
         register,
@@ -145,6 +145,12 @@ const FormInscripCurso = () => {
   */ }
     
   return (
+    <Modal
+    
+    size="lg"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
+  >
     <section className="formCursosContainer">
        <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Group className="mb-3" controlId="formnombre">
@@ -215,6 +221,11 @@ const FormInscripCurso = () => {
       </Button>
     </Form>
     </section>
+    <Modal.Footer>
+      <Button onClick={onHide} className="btn-cursos">Enviar</Button>
+    </Modal.Footer>
+  </Modal>
+    
   );
 };
 

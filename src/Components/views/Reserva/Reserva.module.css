@@ -4,55 +4,9 @@
   padding: 20px;
   background-color: #ffffff;
   text-align: center;
+  border-radius: 8px; /* Añade esta línea para el borde redondeado */
 }
 
-<<<<<<< HEAD
-  .flatpickrContainer {
-    width: 95%;
-  }
-  
-  .formGroup {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input, select {
-    width: calc(100% - 16px);
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .confirmarReservaButton {
-    background-color: #f7b6a6; /* Verde */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .confirmarReservaButton:hover {
-    background-color: #fbcfc4; /* Verde más oscuro */
-  }
-  
- 
-=======
 .flatpickrContainer {
   width: 95%;
 }
@@ -98,4 +52,3 @@ input, select {
     outline: none; /* Remueve el contorno predeterminado del navegador */
     box-shadow: none; /* Remueve el efecto de sombra al hacer clic */
 }
->>>>>>> 1af0ad5b4761cfa34634424bf57f9686e93de1a2

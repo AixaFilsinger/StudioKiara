@@ -150,92 +150,97 @@ const Reservas = () => {
     <section className="mainSection">
       <Container className="mt-4 mb-5">
         <h1 className="text-center">Sacar turno</h1>
-        <Card>
-          <Card.Body>
-            <Card.Title>Crear Nueva Reserva</Card.Title>
-            {error && <Alert variant="danger">{error}</Alert>}
-            {successMessage && (
-              <Alert variant="success">{successMessage}</Alert>
-            )}
-            <Form onSubmit={handleSave}>
-              <Form.Group className="mb-3">
-                <Form.Label>Nombre del Cliente</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="nombreCliente"
-                  value={formData.nombreCliente}
-                  onChange={handleInputChange}
-                  placeholder="Ingrese el nombre del nuevo cliente"
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Teléfono</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="Telefono"
-                  value={formData.Telefono}
-                  onChange={handleInputChange}
-                  placeholder="Ingrese el teléfono del nuevo cliente"
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  name="Email"
-                  value={formData.Email}
-                  onChange={handleInputChange}
-                  placeholder="Ingrese el email del nuevo cliente"
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Servicio</Form.Label>
-                <Form.Select
-                  name="idServicio"
-                  value={formData.idServicio}
-                  onChange={handleInputChange}
-                  required
+        <div className={styles.formContainer}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Crear Nueva Reserva</Card.Title>
+              {error && <Alert variant="danger">{error}</Alert>}
+              {successMessage && (
+                <Alert variant="success">{successMessage}</Alert>
+              )}
+              <Form onSubmit={handleSave}>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Nombre del Cliente</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="nombreCliente"
+                    value={formData.nombreCliente}
+                    onChange={handleInputChange}
+                    placeholder="Ingrese el nombre del nuevo cliente"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Teléfono</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="Telefono"
+                    value={formData.Telefono}
+                    onChange={handleInputChange}
+                    placeholder="Ingrese el teléfono del nuevo cliente"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="Email"
+                    value={formData.Email}
+                    onChange={handleInputChange}
+                    placeholder="Ingrese el email del nuevo cliente"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Servicio</Form.Label>
+                  <Form.Select
+                    name="idServicio"
+                    value={formData.idServicio}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Seleccione un servicio</option>
+                    {servicios.map((servicio) => (
+                      <option
+                        key={servicio.idservicio}
+                        value={servicio.idservicio}
+                      >
+                        {servicio.nombreservicio}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Día</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="Dia"
+                    value={formData.Dia}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Horario</Form.Label>
+                  <Form.Control
+                    type="time"
+                    name="Horario"
+                    value={formData.Horario}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </Form.Group>
+                <Button
+                  className={styles.createReservationButton}
+                  type="submit"
                 >
-                  <option value="">Seleccione un servicio</option>
-                  {servicios.map((servicio) => (
-                    <option
-                      key={servicio.idservicio}
-                      value={servicio.idservicio}
-                    >
-                      {servicio.nombreservicio}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Día</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="Dia"
-                  value={formData.Dia}
-                  onChange={handleInputChange}
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Horario</Form.Label>
-                <Form.Control
-                  type="time"
-                  name="Horario"
-                  value={formData.Horario}
-                  onChange={handleInputChange}
-                  required
-                />
-              </Form.Group>
-              <Button className={styles.createReservationButton} type="submit">
-                Crear Reserva
-              </Button>
-            </Form>
-          </Card.Body>
-        </Card>
+                  Crear Reserva
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </div>
         {emailData && (
           <ContactUs
             to_name={emailData.to_name}

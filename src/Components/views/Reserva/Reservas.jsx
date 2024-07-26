@@ -50,7 +50,7 @@ const Reservas = () => {
           Email: formData.Email,
         }
       );
-      console.log("Respuesta del servidor al crear cliente:", response.data);
+      // console.log("Respuesta del servidor al crear cliente:", response.data);
       return response.data.id;
     } catch (error) {
       console.error("Error al crear o buscar el cliente:", error);
@@ -75,7 +75,7 @@ const Reservas = () => {
 
     try {
       const idcliente = await getClientId();
-      console.log("idcliente obtenido:", idcliente);
+      // console.log("idcliente obtenido:", idcliente);
 
       const data = {
         idCliente: idcliente,
@@ -84,14 +84,14 @@ const Reservas = () => {
         Horario: formData.Horario,
       };
 
-      console.log("Datos enviados:", data);
+      // console.log("Datos enviados:", data);
 
       const response = await axios.post(
         "https://kiara-studio-vercel.vercel.app/api/reservas",
         data
       );
 
-      console.log("Respuesta del servidor:", response);
+      // console.log("Respuesta del servidor:", response);
 
       // Obtener nombre del servicio
       const selectedServicio = servicios.find(
@@ -104,6 +104,7 @@ const Reservas = () => {
       setSuccessMessage("Reserva guardada exitosamente.");
       setEmailData({
         to_name: formData.nombreCliente,
+        to_email: formData.Email, // Añadido campo to_email
         from_name: "Kiara Studio",
         NombreServicio: nombreServicio,
         Dia: formData.Dia,
@@ -116,7 +117,7 @@ const Reservas = () => {
       console.error("Error saving reservation:", error);
       setError(
         error.response?.data?.message ||
-          "Error al guardar la reserva. Por favor, intente de nuevo más tarde."
+        "Error al guardar la reserva. Por favor, intente de nuevo más tarde."
       );
     }
   };
@@ -244,6 +245,7 @@ const Reservas = () => {
         {emailData && (
           <ContactUs
             to_name={emailData.to_name}
+            to_email={emailData.to_email} // Pasar to_email al componente ContactUs
             from_name={emailData.from_name}
             NombreServicio={emailData.NombreServicio}
             Dia={emailData.Dia}

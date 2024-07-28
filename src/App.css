@@ -8,9 +8,9 @@
   src: url(./assets/BrittanySignature.ttf);
 }
 
-* {
+/* * {
   font-family: altaRegularFont;
-}
+} */
 
 /* General styles */
 #root {

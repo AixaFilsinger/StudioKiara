@@ -18,6 +18,7 @@ export const obtenerCursos = async () => {
 
 export const consultaCrearInscripcion = async (inscripcion) => {
   try {
+
     const respuesta = await axios.post(url_inscripcion, inscripcion, {
       headers: {
         "Content-Type": "application/json",

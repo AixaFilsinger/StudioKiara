@@ -4,14 +4,12 @@ import { obtenerServicios } from "../helpers/queries";
 import { Link } from "react-router-dom";
 
 const Servicios = () => {
-  
-  
-  const [servicio, setServicio] = useState([]);
+  const [servicios, setServicios] = useState([]);
 
   useEffect(() => {
     obtenerServicios().then((respuesta) => {
       if (respuesta) {
-        setServicio(respuesta);
+        setServicios(respuesta);
       } else {
         console.log("Se produjo un error");
       }
@@ -26,8 +24,8 @@ const Servicios = () => {
       </p>
 
       <article className="ConteinerCards mt-3 mb-5">
-        {servicio.map((servicio) => (
-          <Link to={"/Reservas"} key={servicio.id}>
+        {servicios.map((servicio) => (
+          <Link to={"/Reservas"} key={servicio.idServicio}>
             <CardServicio servicio={servicio} />
           </Link>
         ))}

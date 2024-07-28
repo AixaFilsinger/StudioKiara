@@ -7,16 +7,15 @@ const Cursos = () => {
   const [curso, setCurso] = useState([]);
   const [modalShow, setModalShow] = useState(false);
 
-  useEffect(()=>{
-    obtenerCursos().then((respuesta)=>{
-      if(respuesta){
+  useEffect(() => {
+    obtenerCursos().then((respuesta) => {
+      if (respuesta) {
         setCurso(respuesta);
-      }else{
-        console.log("Se produhjo un error maca")
+      } else {
+        console.log("Se produjo un error al obtener los cursos");
       }
-
-    })
-  }, [])
+    });
+  }, []);
   return (
     <section className="mainSection p-5">
       <h1 className="text-center fw-semibold mt-0 mb-3">Nuestros cursos</h1>
@@ -29,19 +28,22 @@ const Cursos = () => {
         repudiandae sunt asperiores corrupti? Nostrum totam laboriosam nulla
       </p>
       <div className="container text-center">
-          <div className="row">
-           {curso.map((curso) => (
-            <CardCurso key={curso.id} curso={curso} setModalShow= {setModalShow}></CardCurso>
+        <div className="row">
+          {curso.map((curso) => (
+            <CardCurso
+              key={curso.idcurso} // Asegúrate de que idcurso sea único
+              curso={curso}
+              setModalShow={setModalShow}
+            />
           ))}
-          </div>
         </div>
-          
-      
+      </div>
+
+
       <article className="hola">
-       <FormInscripCurso show={modalShow}
-        onHide={() => setModalShow(false)}></FormInscripCurso>  
+        <FormInscripCurso show={modalShow} onHide={() => setModalShow(false)} />
       </article>
-     
+
     </section>
   );
 };

@@ -1,0 +1,64 @@
+.parallax {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(180deg, #fbcfc4 0%, #fde6de 38%, #FFFFFF 100%);
+    overflow: hidden;
+    padding: 20px; /* Margen alrededor de todo el contenedor */
+  
+    .fondo {
+      flex: 1;
+      background-image: url("../../../assets/nail-finger.png");
+      background-size: contain; /* Ajusta el tamaño de la imagen sin recortarla */
+      background-repeat: no-repeat;
+      background-position: center;
+      margin-right: 20px; /* Margen entre la imagen y el contenedor de texto */
+    }
+  
+    .textContainer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
+      text-align: right;
+  
+      h1 {
+        font-size: 48px;
+        color: #333;
+      }
+  
+      h3 {
+        font-size: 24px;
+        color: #666;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .parallax {
+      flex-direction: column;
+      padding: 10px;
+  
+      .fondo,
+      .textContainer {
+        flex: none;
+        width: 100%;
+        height: 50vh; /* Ajusta la altura para pantallas más pequeñas */
+        margin: 0; /* Elimina el margen para pantallas pequeñas */
+      }
+  
+      .textContainer {
+        text-align: center;
+        padding: 10px;
+  
+        h1 {
+          font-size: 36px;
+        }
+  
+        h3 {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+  

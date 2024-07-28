@@ -1,0 +1,119 @@
+.intro {
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(180deg, #FFFFFF 22%, #fde6de 62%, #fbcfc4 100%);
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+  
+    .wrapper {
+      max-width: 1366px;
+      height: 100%;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 40px;
+      z-index: 2; /* Asegura que esté delante del texto deslizante */
+  
+      .textContainer {
+        height: 100%;
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 40px;
+  
+        h1 {
+          font-size: 88px;
+          color: rgb(0, 0, 0);
+        }
+  
+        h3 {
+          font-size: 24px;
+          color: rgb(0, 0, 0);
+        }
+      }
+    }
+  
+    .imageIntro {
+      height: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 2; /* Asegura que esté delante del texto deslizante */
+  
+      img {
+        height: 100%;
+        width: auto;
+        object-fit: cover;
+        margin-right: 20px; /* Añadimos un margen para separar la imagen del borde */
+      }
+    }
+  
+    .slidinTextContainer {
+      position: absolute;
+      font-size: 50vh;
+      bottom: -100px;
+      white-space: nowrap;
+      color: #f3b39e;
+      width: 100%;
+      font-weight: bold;
+      display: flex;
+      z-index: 1; /* Asegura que esté detrás de los otros elementos */
+      animation: slide 15s linear infinite;
+  
+      @keyframes slide {
+        0% {
+          transform: translateX(100%);
+        }
+        100% {
+          transform: translateX(-200%);
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .intro {
+      flex-direction: column;
+  
+      .wrapper {
+        width: 100%;
+        padding: 20px;
+  
+        .textContainer {
+          width: 100%;
+  
+          h1 {
+            font-size: 36px;
+          }
+  
+          h3 {
+            font-size: 16px;
+          }
+        }
+      }
+  
+      .imageIntro {
+        position: static;
+        height: auto;
+        justify-content: center;
+  
+        img {
+          height: auto;
+          width: 100%;
+          margin: 20px 0; /* Añadimos un margen superior e inferior */
+        }
+      }
+  
+      .slidinTextContainer {
+        font-size: 20vh;
+        bottom: -60px;
+      }
+    }
+  }
+  

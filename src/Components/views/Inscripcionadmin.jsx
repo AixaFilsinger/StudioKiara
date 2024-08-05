@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Card, Spinner, Alert, Button, Modal, Form } from 'react-bootstrap';
+import { Container, Row, Col, Card, Spinner, Alert, Button, Modal, Form, InputGroup } from 'react-bootstrap';
 import Select from 'react-select';
 
 const Inscripcionadmin = () => {
@@ -10,7 +10,8 @@ const Inscripcionadmin = () => {
     const [cursos, setCursos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredInscripciones, setFilteredInscripciones] = useState([]);
     const [showInscripcionModal, setShowInscripcionModal] = useState(false);
     const [currentInscripcion, setCurrentInscripcion] = useState(null);
     const [formData, setFormData] = useState({
@@ -30,6 +31,7 @@ const Inscripcionadmin = () => {
             setInscripciones(inscripcionesResponse.data);
             setClientes(clientesResponse.data);
             setCursos(cursosResponse.data);
+            setFilteredInscripciones(inscripcionesResponse.data);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -41,6 +43,13 @@ const Inscripcionadmin = () => {
     useEffect(() => {
         fetchData();
     }, [fetchData]);
+
+    useEffect(() => {
+        const results = inscripciones.filter(inscripcion =>
+            getClienteNombre(inscripcion.idcliente).toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredInscripciones(results);
+    }, [searchTerm, inscripciones]);
 
     const getClienteNombre = (idCliente) => {
         const cliente = clientes.find(c => c.idcliente === idCliente);
@@ -81,7 +90,6 @@ const Inscripcionadmin = () => {
             Email: formData.Email
         };
 
-        // Verificar campos requeridos
         if (!data.idCliente || !data.idCurso || !data.Telefono || !data.Email) {
             setError({ message: 'Todos los campos son requeridos' });
             return;
@@ -132,6 +140,10 @@ const Inscripcionadmin = () => {
         setFormData(prev => ({ ...prev, [actionMeta.name]: selectedOption ? selectedOption.value : '' }));
     };
 
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
     const clienteOptions = clientes.map(cliente => ({
         value: cliente.idcliente,
         label: cliente.nombreapellido
@@ -164,9 +176,16 @@ const Inscripcionadmin = () => {
     return (
         <Container>
             <h1 className="my-4">Inscripciones</h1>
+            <InputGroup className="mb-3">
+                <Form.Control
+                    placeholder="Buscar por nombre del cliente..."
+                    value={searchTerm}
+                    onChange={handleSearch}
+                />
+            </InputGroup>
             <Button onClick={handleAdd} className="mb-4">Agregar Inscripción</Button>
             <Row>
-                {inscripciones.map(inscripcion => (
+                {filteredInscripciones.map(inscripcion => (
                     <Col key={inscripcion.idinscripcion} md={4} className="mb-4">
                         <Card>
                             <Card.Body>

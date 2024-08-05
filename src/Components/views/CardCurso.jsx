@@ -12,7 +12,7 @@ const CardCurso = ({ curso }) => {
   };
 
   return (
-    <div className="col-sm-12 col-md-5 mb-3">
+    <div className="col-sm-12 col-md-5 col-xl-4 mb-3">
       <Card style={{ width: "16rem", border: "1px solid #FFD700" }} className="borde-card">
         <Card.Img variant="top" src={uñas} />
         <Card.Body className="bg-card-cursos">

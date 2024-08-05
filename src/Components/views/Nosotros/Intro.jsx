@@ -54,12 +54,10 @@ const Intro = () => {
     <div className="intro">
       <div className="wrapper">
         <motion.div className="textContainer" variants={textVariants} initial="initial" animate="animate">
-          <motion.h1 variants={childVariants}>SOBRE NOSOTROS</motion.h1>
-          <motion.h3 variants={childVariants}>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed
-            voluptates quo facilis, earum pariatur nihil laudantium, hic est
-            assumenda fuga ducimus minus incidunt mollitia accusantium. Ducimus
-            cumque iste dolore et.
+          <motion.h1 variants={childVariants} className="ps-3 fst-italic mb-0">SOBRE NOSOTROS</motion.h1>
+          <motion.h3 variants={childVariants} className="ps-3 mt-0">
+            Descubri como podemos resaltar tu belleza natural en Kiara Studio. Ofrecemos una experiencia unica de bienestar y renovacion.
+            Especializados en uñas, pies, cejas, pestañas y depilacion definitiva.
           </motion.h3>
         </motion.div>
       </div>

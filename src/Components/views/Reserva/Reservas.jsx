@@ -3,6 +3,8 @@ import axios from "axios";
 import { Container, Card, Spinner, Alert, Button, Form } from "react-bootstrap";
 import ContactUs from "./ContactUs";
 import styles from "./Reserva.module.css";
+import Swal from "sweetalert2";
+
 
 const Reservas = () => {
   const [servicios, setServicios] = useState([]);
@@ -101,7 +103,9 @@ const Reservas = () => {
         ? selectedServicio.nombreservicio
         : "Servicio no encontrado";
 
-      setSuccessMessage("Reserva guardada exitosamente.");
+      /*setSuccessMessage("Reserva guardada exitosamente.");*/
+      Swal.fire("Tu turno fue reservado", "Recordá que tenes hasta 24hs antes para cancelarlo. ¡Esperamos verte pronto!", "success");
+
       setEmailData({
         to_name: formData.nombreCliente,
         to_email: formData.Email, // Añadido campo to_email

@@ -2,19 +2,32 @@ import { useEffect, useState } from "react";
 import CardServicio from "./CardServicio";
 import { obtenerServicios } from "../helpers/queries";
 import { Link } from "react-router-dom";
+import { Container, Spinner } from "react-bootstrap";
 
 const Servicios = () => {
   const [servicios, setServicios] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     obtenerServicios().then((respuesta) => {
       if (respuesta) {
         setServicios(respuesta);
+        setLoading(false);
       } else {
         console.log("Se produjo un error");
+        setLoading(false);
       }
     });
   }, []);
+
+  if (loading) {
+    return (
+      <Container className="text-center mt-5">
+        <Spinner animation="border" />
+        <div>Cargando...</div>
+      </Container>
+    );
+  }
 
   return (
     <section className="mainSection">

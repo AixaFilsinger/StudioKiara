@@ -31,6 +31,30 @@ const FormInscripCurso = () => {
     fetchData();
   }, []);
 
+  const crearCliente = async (data) => {
+    try {
+      const nuevoCliente = {
+        NombreApellido: data.nombreapellido,
+        Telefono: data.telefono,
+        Email: data.email,
+      };
+
+      const respuestaCliente = await axios.post(
+        "https://kiara-studio-vercel.vercel.app/api/clientes",
+        nuevoCliente
+      );
+
+      if (respuestaCliente.data && respuestaCliente.data.id) {
+        return respuestaCliente.data.id;
+      } else {
+        throw new Error("Respuesta del servidor no contiene id del cliente");
+      }
+    } catch (error) {
+      console.error("Error al crear el cliente:", error.response ? error.response.data : error.message);
+      throw new Error("No se pudo crear el cliente. Por favor, intente nuevamente más tarde.");
+    }
+  };
+
   const onSubmit = async (data) => {
     try {
       let idCliente;
@@ -40,27 +64,9 @@ const FormInscripCurso = () => {
       if (clienteExistente) {
         idCliente = clienteExistente.idcliente;
       } else {
-        const nuevoCliente = {
-          nombreapellido: data.nombreapellido,
-          email: data.email,
-          telefono: data.telefono,
-        };
-
-        const respuestaCliente = await axios.post(
-          "https://kiara-studio-vercel.vercel.app/api/clientes",
-          nuevoCliente
-        );
-
-        console.log("Respuesta del servidor al crear cliente:", respuestaCliente.data);
-
-        if (respuestaCliente.data && respuestaCliente.data.idcliente) {
-          idCliente = respuestaCliente.data.idcliente;
-
-          // Actualizar la lista de clientes después de agregar un nuevo cliente
-          setClientes(prevClientes => [...prevClientes, respuestaCliente.data]);
-        } else {
-          throw new Error("Error al crear el cliente");
-        }
+        idCliente = await crearCliente(data);
+        // Actualizar la lista de clientes después de agregar un nuevo cliente
+        setClientes(prevClientes => [...prevClientes, { idcliente: idCliente, ...data }]);
       }
 
       // Datos de inscripción
@@ -69,15 +75,11 @@ const FormInscripCurso = () => {
         idCurso: data.curso,
       };
 
-      console.log("Datos de inscripción:", nuevaInscripcion);
-
       // Crear inscripción
       const respuestaInscripcion = await axios.post(
         "https://kiara-studio-vercel.vercel.app/api/inscripcion",
         nuevaInscripcion
       );
-
-      console.log("Respuesta del servidor al crear inscripción:", respuestaInscripcion.data);
 
       if (respuestaInscripcion.data && respuestaInscripcion.data.id) {
         Swal.fire("Solicitud Enviada", "Kiara Studio se comunicará en breve", "success");

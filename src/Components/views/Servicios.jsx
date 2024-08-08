@@ -19,8 +19,8 @@ const Servicios = () => {
   return (
     <section className="mainSection">
       <h1 className="text-center mt-5 h1Servicios">Nuestros Servicios</h1>
-      <p className="text-center">
-        Si desea sacar un turno en alguno de nuestros servicios, por favor presione sobre la imagen
+      <p className="text-center fs-5">
+        Si deseas sacar un turno en alguno de nuestros servicios, por favor presiona sobre la imagen
       </p>
 
       <article className="ConteinerCards mt-3 mb-5">

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { format, parseISO } from 'date-fns';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Card, Spinner, Alert, Button, Modal, Form } from 'react-bootstrap';
+import { Container, Row, Col, Card, Spinner, Alert, Button, Modal, Form, InputGroup } from 'react-bootstrap';
 import Select from 'react-select';
 import Inscripcionadmin from './Inscripcionadmin';
 
@@ -14,7 +14,7 @@ const Admin = () => {
     const [servicios, setServicios] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [view, setView] = useState('reservas'); // State to switch between 'reservas' and 'inscripciones'
+    const [view, setView] = useState('reservas');
     const [showModal, setShowModal] = useState(false);
     const [currentItem, setCurrentItem] = useState(null);
     const [formData, setFormData] = useState({
@@ -23,6 +23,8 @@ const Admin = () => {
         Dia: '',
         Horario: ''
     });
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredReservas, setFilteredReservas] = useState([]);
 
     const fetchData = useCallback(async () => {
         try {
@@ -34,6 +36,7 @@ const Admin = () => {
                 axios.get('https://kiara-studio-vercel.vercel.app/api/cursos')
             ]);
             setReservas(reservasResponse.data);
+            setFilteredReservas(reservasResponse.data);
             setInscripciones(inscripcionesResponse.data);
             setClientes(clientesResponse.data);
             setServicios(serviciosResponse.data);
@@ -49,6 +52,13 @@ const Admin = () => {
     useEffect(() => {
         fetchData();
     }, [fetchData]);
+
+    useEffect(() => {
+        const results = reservas.filter(reserva =>
+            getClienteNombre(reserva.idcliente).toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredReservas(results);
+    }, [searchTerm, reservas]);
 
     const getClienteNombre = (idCliente) => {
         const cliente = clientes.find(c => c.idcliente === idCliente);
@@ -84,7 +94,7 @@ const Admin = () => {
             Horario: formData.Horario
         };
 
-        // Verificar campos requeridos
+
         if (!data.idCliente || !data.idServicio || !data.Dia || !data.Horario) {
             setError({ message: 'Todos los campos son requeridos' });
             return;
@@ -117,7 +127,7 @@ const Admin = () => {
         setFormData({
             idCliente: item.idcliente,
             idServicio: item.idservicio,
-            Dia: item.dia ? format(parseISO(item.dia), 'yyyy-MM-dd') : '', // Validar fecha
+            Dia: item.dia ? format(parseISO(item.dia), 'yyyy-MM-dd') : '',
             Horario: item.horario
         });
         setShowModal(true);
@@ -141,6 +151,10 @@ const Admin = () => {
 
     const handleSelectChange = (selectedOption, actionMeta) => {
         setFormData(prev => ({ ...prev, [actionMeta.name]: selectedOption ? selectedOption.value : '' }));
+    };
+
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
     };
 
     const clienteOptions = clientes.map(cliente => ({
@@ -196,9 +210,16 @@ const Admin = () => {
 
             {view === 'reservas' && (
                 <>
+                    <InputGroup className="mb-3">
+                        <Form.Control
+                            placeholder="Buscar por nombre del cliente..."
+                            value={searchTerm}
+                            onChange={handleSearch}
+                        />
+                    </InputGroup>
                     <Button onClick={handleAdd} className="mb-4">Agregar Reserva</Button>
                     <Row>
-                        {reservas.map(reserva => (
+                        {filteredReservas.map(reserva => (
                             <Col key={reserva.idreserva} md={4} className="mb-4">
                                 <Card>
                                     <Card.Body>
@@ -217,9 +238,7 @@ const Admin = () => {
             )}
 
             {view === 'inscripciones' && (
-                <>
-                    <Inscripcionadmin />
-                </>
+                <Inscripcionadmin />
             )}
 
             <Modal show={showModal} onHide={handleCloseModal} style={{ zIndex: 1050 }}>

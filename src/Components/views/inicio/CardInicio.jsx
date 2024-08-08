@@ -1,11 +1,13 @@
 import uñas7 from '../../../assets/uñas7.jpg'
 import estudio1 from '../../../assets/estudio1.jpg'
 import { Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 const CardInicio = () => {
   return (
     <section className="container d-flex justify-content-center">
       <section className="row mt-5 ">
         <aside className="col-sm-12 col-md-6">
+        <Link to="./Servicios">
           <Card className="bg-dark text-white custom-card">
             <Card.Img
               src={uñas7}
@@ -23,8 +25,10 @@ const CardInicio = () => {
               </Card.Text>
             </Card.ImgOverlay>
           </Card>
+          </Link>
         </aside>
         <aside className="col-sm-12 col-md-6">
+        <Link to="./Cursos">
           <Card className="bg-dark text-white custom-card">
             <Card.Img
               src={estudio1}
@@ -40,6 +44,7 @@ const CardInicio = () => {
               </Card.Text>
             </Card.ImgOverlay>
           </Card>
+          </Link>
         </aside>
       </section>
     </section>

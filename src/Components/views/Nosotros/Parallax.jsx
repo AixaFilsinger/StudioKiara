@@ -5,7 +5,7 @@ const Parallax = () => {
     <div className='parallax'>
       <div className='textContainer'>
       <h1>Nuestra Misión</h1>
-      <h3>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Veniam dolore sunt quia facilis repellendus, rerum quidem, ab, libero nesciunt similique maxime enim quo accusantium. Ipsa magnam alias veniam harum minima.</h3>
+      <h3>Brindar experiencias excepcionales de belleza y bienestar, combinando técnicas avanzadas con un servicio personalizado para realzar la confianza y la satisfacción de nuestros clientes</h3>
       </div>
       <div className='fondo'></div>
     </div>

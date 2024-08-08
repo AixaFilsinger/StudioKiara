@@ -1,13 +1,13 @@
 .parallax {
     display: flex;
     height: 100vh;
-    background: linear-gradient(180deg, #fbcfc4 0%, #fde6de 38%, #FFFFFF 100%);
+    background-image: linear-gradient(77deg, #FFFFFF 22%, #fde6de 62%, #fbcfc4 100%);
     overflow: hidden;
     padding: 20px; /* Margen alrededor de todo el contenedor */
   
     .fondo {
       flex: 1;
-      background-image: url("../../../assets/nail-finger.png");
+      background-image: url("../../../assets/logofull.png");
       background-size: contain; /* Ajusta el tamaño de la imagen sin recortarla */
       background-repeat: no-repeat;
       background-position: center;

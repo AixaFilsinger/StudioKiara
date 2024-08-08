@@ -56,10 +56,7 @@ const Intro = () => {
         <motion.div className="textContainer" variants={textVariants} initial="initial" animate="animate">
           <motion.h1 variants={childVariants}>SOBRE NOSOTROS</motion.h1>
           <motion.h3 variants={childVariants}>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed
-            voluptates quo facilis, earum pariatur nihil laudantium, hic est
-            assumenda fuga ducimus minus incidunt mollitia accusantium. Ducimus
-            cumque iste dolore et.
+          Tu confianza y belleza son nuestro mayor orgullo. Conoce al equipo y el compromiso que nos inspiran cada día al elegirnos
           </motion.h3>
         </motion.div>
       </div>

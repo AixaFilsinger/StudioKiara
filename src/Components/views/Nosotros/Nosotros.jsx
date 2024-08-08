@@ -12,11 +12,6 @@ const Nosotros = () => {
       <section>
         <Parallax/>
       </section>
-      <section>Servicio1</section>
-      <section>Servicio2</section>
-      <section>Servicio3</section>
-      <section>Servicio4</section>
-      <section>End</section>
     </div>
   );
 };

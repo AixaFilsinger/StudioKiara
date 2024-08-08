@@ -1,205 +1,263 @@
-import React, { useEffect, useState } from 'react';
-import styles from './Reserva.module.css';
-import axios from 'axios';
-import Flatpickr from 'react-flatpickr';
-import 'flatpickr/dist/flatpickr.min.css';
+import React, { useEffect, useState, useCallback } from "react";
+import axios from "axios";
+import { Container, Card, Spinner, Alert, Button, Form } from "react-bootstrap";
+import ContactUs from "./ContactUs";
+import styles from "./Reserva.module.css";
+import Swal from "sweetalert2";
+
 
 const Reservas = () => {
-  const initialState = {
-    NombreApellido: '',
-    Email: '',
-    Telefono: '',
-    idServicio: '',
-    Dia: '',
-    Horario: ''
-  };
+  const [servicios, setServicios] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [formData, setFormData] = useState({
+    nombreCliente: "",
+    idServicio: "",
+    Dia: "",
+    Horario: "",
+    Telefono: "",
+    Email: "",
+  });
 
-  const [formData, setFormData] = useState(initialState);
-  const [errors, setErrors] = useState([]);
-  const [disabledDates, setDisabledDates] = useState([]);
-  const [reservas, setReservas] = useState([]);
-  const [clientes, setClientes] = useState([]);
+  const [emailData, setEmailData] = useState(null);
 
-  useEffect(() => {
-    const fetchDisabledDates = async () => {
-      try {
-        const rsp = await axios.get('http://localhost:3001/disabledDates'); // Cambiar cuando esté lista la base de datos
-        if (rsp.status === 200) {
-          console.log('Fechas deshabilitadas obtenidas:', rsp.data);
-          const Dias = [];
-          rsp.data.forEach(item => {
-            Dias.push(item.Dia);
-          });
-          setDisabledDates(Dias);
-        }
-      } catch (error) {
-        console.error('Error al recuperar las fechas deshabilitadas', error);
-      }
-    };
-    fetchDisabledDates();
+  const fetchData = useCallback(async () => {
+    try {
+      const serviciosResponse = await axios.get(
+        "https://kiara-studio-vercel.vercel.app/api/servicios"
+      );
+      setServicios(serviciosResponse.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError(
+        "Error al cargar los datos. Por favor, intente de nuevo más tarde."
+      );
+      setLoading(false);
+    }
   }, []);
 
-  const disableSundays = (Dia) => {
-    const day = Dia.getDay();
-    return day === 0;
-  };
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  const handleTimeChange = (selectedTimes) => {
-    setFormData({
-      ...formData,
-      Horario: selectedTimes[0] ? selectedTimes[0].toTimeString().split(' ')[0] : '' // HH:MM:SS
-    });
-  };
-
-  const handleDateChange = (selectedDates) => {
-    setFormData({
-      ...formData,
-      Dia: selectedDates[0] ? selectedDates[0].toISOString().split('T')[0] : '' // YYYY-MM-DD
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log('Reserva confirmada:', formData);
+  const getClientId = async () => {
     try {
-      // Enviar datos del cliente y obtener el ID del cliente
-      const clienteResponse = await axios.post('https://kiara-studio-vercel.vercel.app/api/Clientes', {
-        NombreApellido: formData.NombreApellido,
-        Telefono: formData.Telefono,
-        Email: formData.Email
-      });
-      const idCliente = clienteResponse.data.id;
-
-      // Enviar datos de la reserva junto con el ID del cliente
-      const reservaResponse = await axios.post('https://kiara-studio-vercel.vercel.app/api/Reservas', {
-        idCliente: idCliente,
-        idServicio: formData.idServicio,
-        Dia: formData.Dia,
-        Horario: formData.Horario
-      });
-
-      setClientes([...clientes, clienteResponse.data]);
-      setReservas([...reservas, reservaResponse.data]);
-
-      setFormData(initialState); // Limpiamos el formulario después de enviarlo
+      const response = await axios.post(
+        "https://kiara-studio-vercel.vercel.app/api/clientes",
+        {
+          NombreApellido: formData.nombreCliente,
+          Telefono: formData.Telefono,
+          Email: formData.Email,
+        }
+      );
+      // console.log("Respuesta del servidor al crear cliente:", response.data);
+      return response.data.id;
     } catch (error) {
-      console.error('Error en la solicitud:', error);
-      setErrors([error.response?.data?.message || 'Error en la solicitud']);
+      console.error("Error al crear o buscar el cliente:", error);
+      throw new Error("Error al crear o buscar el cliente.");
     }
   };
 
+  const handleSave = async (e) => {
+    e.preventDefault();
+
+    if (
+      !formData.nombreCliente ||
+      !formData.idServicio ||
+      !formData.Dia ||
+      !formData.Horario ||
+      !formData.Telefono ||
+      !formData.Email
+    ) {
+      setError("Todos los campos son requeridos.");
+      return;
+    }
+
+    try {
+      const idcliente = await getClientId();
+      // console.log("idcliente obtenido:", idcliente);
+
+      const data = {
+        idCliente: idcliente,
+        idServicio: formData.idServicio,
+        Dia: formData.Dia,
+        Horario: formData.Horario,
+      };
+
+      // console.log("Datos enviados:", data);
+
+      const response = await axios.post(
+        "https://kiara-studio-vercel.vercel.app/api/reservas",
+        data
+      );
+
+      // console.log("Respuesta del servidor:", response);
+
+      // Obtener nombre del servicio
+      const selectedServicio = servicios.find(
+        (servicio) => servicio.idservicio === parseInt(formData.idServicio)
+      );
+      const nombreServicio = selectedServicio
+        ? selectedServicio.nombreservicio
+        : "Servicio no encontrado";
+
+      /*setSuccessMessage("Reserva guardada exitosamente.");*/
+      Swal.fire("Tu turno fue reservado", "Recordá que tenes hasta 24hs antes para cancelarlo. ¡Esperamos verte pronto!", "success");
+
+      setEmailData({
+        to_name: formData.nombreCliente,
+        to_email: formData.Email, // Añadido campo to_email
+        from_name: "Kiara Studio",
+        NombreServicio: nombreServicio,
+        Dia: formData.Dia,
+        Horario: formData.Horario,
+      });
+      await fetchData();
+      resetForm();
+      setError(null);
+    } catch (error) {
+      console.error("Error saving reservation:", error);
+      setError(
+        error.response?.data?.message ||
+        "Error al guardar la reserva. Por favor, intente de nuevo más tarde."
+      );
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      nombreCliente: "",
+      idServicio: "",
+      Dia: "",
+      Horario: "",
+      Telefono: "",
+      Email: "",
+    });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  if (loading) {
+    return (
+      <Container className="text-center mt-5">
+        <Spinner animation="border" />
+        <div>Cargando...</div>
+      </Container>
+    );
+  }
+
   return (
-    <form className={styles.formContainer} onSubmit={handleSubmit}>
-      <div className={styles.formGroup}>
-        <label>
-          Apellido y Nombre:
-          <input
-            type="text"
-            name="NombreApellido"
-            value={formData.NombreApellido}
-            onChange={handleChange}
-            required
+    <section className="mainSection">
+      <Container className="mt-4 mb-5">
+        <h1 className="text-center">Sacar turno</h1>
+        <div className={styles.formContainer}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Crear Nueva Reserva</Card.Title>
+              {error && <Alert variant="danger">{error}</Alert>}
+              {successMessage && (
+                <Alert variant="success">{successMessage}</Alert>
+              )}
+              <Form onSubmit={handleSave}>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Nombre del Cliente</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="nombreCliente"
+                    value={formData.nombreCliente}
+                    onChange={handleInputChange}
+                    placeholder="Ingrese el nombre del nuevo cliente"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Teléfono</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="Telefono"
+                    value={formData.Telefono}
+                    onChange={handleInputChange}
+                    placeholder="Ingrese el teléfono del nuevo cliente"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="Email"
+                    value={formData.Email}
+                    onChange={handleInputChange}
+                    placeholder="Ingrese el email del nuevo cliente"
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Servicio</Form.Label>
+                  <Form.Select
+                    name="idServicio"
+                    value={formData.idServicio}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Seleccione un servicio</option>
+                    {servicios.map((servicio) => (
+                      <option
+                        key={servicio.idservicio}
+                        value={servicio.idservicio}
+                      >
+                        {servicio.nombreservicio}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Día</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="Dia"
+                    value={formData.Dia}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className={styles.formGroup}>
+                  <Form.Label>Horario</Form.Label>
+                  <Form.Control
+                    type="time"
+                    name="Horario"
+                    value={formData.Horario}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </Form.Group>
+                <Button
+                  className={styles.createReservationButton}
+                  type="submit"
+                >
+                  Crear Reserva
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </div>
+        {emailData && (
+          <ContactUs
+            to_name={emailData.to_name}
+            to_email={emailData.to_email} // Pasar to_email al componente ContactUs
+            from_name={emailData.from_name}
+            NombreServicio={emailData.NombreServicio}
+            Dia={emailData.Dia}
+            Horario={emailData.Horario}
           />
-        </label>
-      </div>
-      <div className={styles.formGroup}>
-        <label>
-          Correo Electrónico:
-          <input
-            type="email"
-            name="Email"
-            value={formData.Email}
-            onChange={handleChange}
-            required
-          />
-        </label>
-      </div>
-      <div className={styles.formGroup}>
-        <label>
-          Número de Celular:
-          <input
-            type="tel"
-            name="Telefono"
-            value={formData.Telefono}
-            onChange={handleChange}
-            pattern="[0-9]{10}"
-            required
-          />
-        </label>
-      </div>
-      <div className={styles.formGroup}>
-        <label>
-          Tipo de servicio:
-          <select
-            name="idServicio"
-            value={formData.idServicio}
-            onChange={handleChange}
-            required
-          >
-            <option value=''>Seleccione el servicio</option>
-            <option value='1'>Manicura y Pedicura</option>
-            <option value='2'>Lifting de pestañas</option>
-            <option value='3'>Tratamiento en cejas</option>
-            <option value='4'>Depilación Láser</option>
-          </select>
-        </label>
-      </div>
-      <div className={styles.formGroup}>
-        <label>
-          Día:
-          <Flatpickr
-            className={styles.flatpickrContainer}
-            value={formData.Dia}
-            onChange={handleDateChange}
-            options={{
-              altInput: true,
-              altFormat: "F j, Y",
-              dateFormat: "Y-m-d",
-              minDate: "today",
-              disable: [
-                ...disabledDates, 
-                disableSundays
-              ]
-            }}
-            required
-          />
-        </label>
-      </div>
-      <div className={styles.formGroup}>
-        <label>
-          Hora:
-          <Flatpickr
-            value={formData.Horario}
-            onChange={handleTimeChange}
-            options={{
-              enableTime: true,
-              noCalendar: true,
-              minTime: "10:00",
-              maxTime: "20:00",
-            }}
-            required
-          />
-        </label>
-      </div>
-      <div>
-      <button type="submit" name="confirmarReserva" className={styles.confirmarReservaButton}>Confirmar Reserva</button>
-        {errors.length > 0 && (
-          <ul>
-            {errors.map((error, index) => (
-              <li key={index} style={{ color: 'red' }}>{error}</li>
-            ))}
-          </ul>
         )}
-      </div>
-    </form>
+      </Container>
+    </section>
   );
 };
 

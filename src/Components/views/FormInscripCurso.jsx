@@ -1,128 +1,167 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { useForm } from 'react-hook-form';
-import { consultaCrearInscripcion, obtenerCursos } from '../helpers/queries';
+import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { useEffect, useState } from 'react';
-
+import { useForm } from "react-hook-form";
+import { Form, Button } from "react-bootstrap";
+import axios from "axios";
 
 const FormInscripCurso = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-      } = useForm();
+  const [clientes, setClientes] = useState([]);
+  const [cursos, setCursos] = useState([]);
 
-      const [curso, setCurso] = useState([]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
-  useEffect(()=>{
-    obtenerCursos().then((respuesta)=>{
-      if(respuesta){
-        setCurso(respuesta);
-      }else{
-        console.log("Se produhjo un error maca")
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cursosRespuesta = await axios.get("https://kiara-studio-vercel.vercel.app/api/cursos");
+        const clientesRespuesta = await axios.get("https://kiara-studio-vercel.vercel.app/api/clientes");
+
+        setCursos(cursosRespuesta.data || []);
+        setClientes(clientesRespuesta.data || []);
+      } catch (error) {
+        console.error("Error al obtener cursos y clientes:", error.message);
       }
+    };
 
-    })
-  }, [])
+    fetchData();
+  }, []);
 
-      const onSubmit = (inscripNueva) => {
-        //realizar la peticion que agregue la receta a la API
-        consultaCrearInscripcion(inscripNueva).then((respuesta) => {
-          console.log(respuesta)
-          if (respuesta && respuesta.message === "Ya existe una inscripcion igual") {
-            Swal.fire("Error", "Ya existe una inscripcion con ese nombre", "error");
-          } else if ( respuesta && respuesta.id) {
-            Swal.fire(
-              "Solicitud Enviada",
-              `Kiara Studio se comunicara en breve `,
-              "success"
-            );
-            reset();
-          } else {
-            Swal.fire(
-              "Error",
-              `Intente realizar esta operacion mas tarde`,
-              "error"
-            );
-          }
-        });
-        reset();
+  const crearCliente = async (data) => {
+    try {
+      const nuevoCliente = {
+        NombreApellido: data.nombreapellido,
+        Telefono: data.telefono,
+        Email: data.email,
       };
 
+      const respuestaCliente = await axios.post(
+        "https://kiara-studio-vercel.vercel.app/api/clientes",
+        nuevoCliente
+      );
 
-    
+      if (respuestaCliente.data && respuestaCliente.data.id) {
+        return respuestaCliente.data.id;
+      } else {
+        throw new Error("Respuesta del servidor no contiene id del cliente");
+      }
+    } catch (error) {
+      console.error("Error al crear el cliente:", error.response ? error.response.data : error.message);
+      throw new Error("No se pudo crear el cliente. Por favor, intente nuevamente más tarde.");
+    }
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      let idCliente;
+
+      // Verificar cliente existente
+      const clienteExistente = clientes.find(cliente => cliente.email === data.email);
+      if (clienteExistente) {
+        idCliente = clienteExistente.idcliente;
+      } else {
+        idCliente = await crearCliente(data);
+        // Actualizar la lista de clientes después de agregar un nuevo cliente
+        setClientes(prevClientes => [...prevClientes, { idcliente: idCliente, ...data }]);
+      }
+
+      // Datos de inscripción
+      const nuevaInscripcion = {
+        idCliente,
+        idCurso: data.curso,
+      };
+
+      // Crear inscripción
+      const respuestaInscripcion = await axios.post(
+        "https://kiara-studio-vercel.vercel.app/api/inscripcion",
+        nuevaInscripcion
+      );
+
+      if (respuestaInscripcion.data && respuestaInscripcion.data.id) {
+        Swal.fire("Solicitud Enviada", "Kiara Studio se comunicará en breve", "success");
+        reset();
+      } else {
+        throw new Error("Error al crear la inscripción");
+      }
+    } catch (error) {
+      console.error("Error en el envío del formulario:", error);
+      Swal.fire("Error", `Intente realizar esta operación más tarde. Error: ${error.message}`, "error");
+    }
+  };
+
   return (
     <section className="formCursosContainer">
-       <Form onSubmit={handleSubmit(onSubmit)}>
-      <Form.Group className="mb-3" controlId="formnombre">
-        <Form.Label>nombre y Apellido</Form.Label>
-        <Form.Control type="text" placeholder="Ej:Aixa Filsinger" {...register("nombreyapellido", {
-              required:
-                "Este campo es obligatorio",
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form.Group className="mb-3" controlId="formnombre">
+          <Form.Label>Nombre y Apellido</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Ej: Aixa Filsinger"
+            {...register("nombreapellido", {
+              required: "Este campo es obligatorio",
               minLength: {
                 value: 5,
-                message:
-                  "Este campo debe contener minimo 5 caracteres",
+                message: "Este campo debe contener mínimo 5 caracteres",
               },
               maxLength: {
                 value: 100,
-                message:
-                  "Su nombre y apellido debe contener maximo 100 caracteres",
-              }
-            })}/>
-       <Form.Text className="text-danger">
-            {errors.nombreyapellido?.message}
-          </Form.Text>
-      </Form.Group>
+                message: "Su nombre y apellido debe contener máximo 100 caracteres",
+              },
+            })}
+          />
+          <Form.Text className="text-danger">{errors.nombreapellido?.message}</Form.Text>
+        </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formCurso">
+        <Form.Group className="mb-3" controlId="formCurso">
           <Form.Label>Curso a elegir</Form.Label>
           <Form.Select
             aria-label="Curso"
-            {...register("curso", { required: "Debe elegir una opcion" })}
+            {...register("curso", { required: "Debe elegir una opción" })}
           >
-            <option value="">Seleccione una Categoria</option>
-            {curso.map((curso) => (
-          <option key={curso.id} value={curso.id}>
-            {curso.nombrecurso}
-          </option>
-        ))}
+            <option value="">Seleccione una Categoría</option>
+            {cursos.map((curso) => (
+              <option key={curso.idcurso} value={curso.idcurso}>
+                {curso.nombrecurso}
+              </option>
+            ))}
           </Form.Select>
-          <Form.Text className="text-danger">
-            {errors.curso?.message}
-          </Form.Text>
+          <Form.Text className="text-danger">{errors.curso?.message}</Form.Text>
         </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formemail">
-        <Form.Label>Email</Form.Label>
-        <Form.Control type="email" placeholder="Ej:Aixa@gamil.com"  {...register("email", {
+        <Form.Group className="mb-3" controlId="formemail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Ej: aixa@gmail.com"
+            {...register("email", {
               required: "El email es obligatorio",
               pattern: {
-                value:
-                  /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/,
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 message: 'El Email debe contener "@" y terminar en: ".com"',
               },
-            })}/>
-             <Form.Text className="text-danger">
-            {errors.email?.message}
-          </Form.Text>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formCelular">
-        <Form.Label>Celular</Form.Label>
-        <Form.Control type="number" placeholder="Ej:3813976548" {...register("celular",{
-            required:"Este campo es obligatorio"
-        })} />
-        <Form.Text className="text-danger">
-            {errors.celular?.message}
-          </Form.Text>
-      </Form.Group>
-      
-      <Button variant="primary" type="submit">
-        enviar
-      </Button>
-    </Form>
+            })}
+          />
+          <Form.Text className="text-danger">{errors.email?.message}</Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formTelefono">
+          <Form.Label>Teléfono</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Ej: 3813976548"
+            {...register("telefono", { required: "Este campo es obligatorio" })}
+          />
+          <Form.Text className="text-danger">{errors.telefono?.message}</Form.Text>
+        </Form.Group>
+
+        <Button className="btn-cursos" type="submit">
+          Enviar
+        </Button>
+      </Form>
     </section>
   );
 };

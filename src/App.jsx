@@ -9,7 +9,7 @@ import Footer from './Components/common/Footer';
 import Inicio from './Components/views/Inicio';
 import Contacto from './Components/views/Contacto';
 import Cursos from './Components/views/Cursos';
-import Nosotros from './Components/views/Nosotros';
+import Nosotros from './Components/views/Nosotros/Nosotros';
 import Servicios from './Components/views/Servicios';
 import Reservas from './Components/views/Reserva/Reservas';
 import Admin from './Components/views/Admin';
@@ -40,12 +40,12 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Inicio />}></Route>
           <Route exact path="/contacto" element={<Contacto />}></Route>
-          <Route exact path="/nosotros" element={<Nosotros />}></Route>
+          <Route exact path="/Nosotros" element={<Nosotros />}></Route>
           <Route exact path="/servicios" element={<Servicios />}></Route>
-          <Route  path="/Reservas/*" element={<Reservas></Reservas> }></Route>
+          <Route path="/Reservas" element={<Reservas></Reservas>}></Route>
           <Route exact path="/cursos" element={<Cursos></Cursos>}></Route>
           <Route
-            path="/administrador/*"
+            path="/administrador"
             element={
               <PrivateRoute>
                 <Admin />

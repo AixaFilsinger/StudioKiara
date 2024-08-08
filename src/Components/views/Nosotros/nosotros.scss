@@ -1,0 +1,31 @@
+.nosotros-container {
+    height: 100vh; 
+    overflow-y: scroll; 
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+    background-color: #f0f0e5;
+    color: rgb(0, 0, 0);
+  
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    
+    scrollbar-width: none; /* Firefox */
+}
+
+.aboutUs-section{
+    text-decoration: none;
+    color: inherit;
+}
+  
+.nosotros-container section {
+    height: 100vh; 
+    scroll-snap-align: center;
+}
+  

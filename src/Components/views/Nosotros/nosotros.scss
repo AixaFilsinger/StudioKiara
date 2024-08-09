@@ -1,6 +1,6 @@
 .nosotros-container {
-    height: 100vh; 
-    overflow-y: scroll; 
+    height: 100vh;
+    overflow-y: scroll;
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
 
@@ -11,21 +11,21 @@
 
     background-color: #f0f0e5;
     color: rgb(0, 0, 0);
-  
+
     ::-webkit-scrollbar {
-      display: none;
+        display: none;
     }
-    
-    scrollbar-width: none; /* Firefox */
+
+    // scrollbar-width: none;
+    // /* Firefox */
 }
 
-.aboutUs-section{
+.aboutUs-section {
     text-decoration: none;
     color: inherit;
 }
-  
+
 .nosotros-container section {
-    height: 100vh; 
+    height: 100vh;
     scroll-snap-align: center;
 }
-  

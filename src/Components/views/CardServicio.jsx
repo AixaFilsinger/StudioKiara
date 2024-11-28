@@ -2,6 +2,8 @@ import cejas from "../../assets/pestañas1.jpg";
 import manicura from "../../assets/uñas1.jpg";
 import depi from "../../assets/depilacion.jpg";
 import pestañas from "../../assets/Lifting1.jpg"
+import { Button, Card} from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const CardServicio = ({ servicio }) => {
   const serviciosData = {
@@ -11,7 +13,7 @@ const CardServicio = ({ servicio }) => {
     },
     "Lifting de pestañas": {
       imagen: pestañas,
-      descripcion: "Es un tratamiento que eleva la curvatura de tus pestañas, resaltando la expresión de la mirada y alargando las pestañas desde la raíz, sin utilizar pelo sintético."
+      descripcion: "Tratamiento que eleva la curvatura de tus pestañas y resalta tu mirada."
     },
     "Depilación Láser": {
       imagen: depi,
@@ -28,16 +30,22 @@ const CardServicio = ({ servicio }) => {
   };
 
   return (
-    <div className="cardServicios">
-      <div className="face front">
-        <img src={imagen} alt="" className="img" />
-        <h3>{servicio.nombreservicio}</h3>
-      </div>
-      <div className="face back">
-        <h3>{servicio.nombreservicio}</h3>
-        <p>{descripcion}</p>
-      </div>
-    </div>
+    
+     <Card className="cardServicios">
+      <Card.Img variant="top" src={imagen}  className="img-servicio"/>
+      <Card.Body className="cardServicios-des">
+        <Card.Title>{servicio.nombreservicio}</Card.Title>
+        <Card.Text className="cardServicios-des">
+          {descripcion}
+        </Card.Text>
+        <div className="boton-container">
+        <Link to="/Reservas" className=""><button className="boton">Pedir Turno</button></Link>
+        </div>
+        
+      </Card.Body>
+    </Card>
+    
+   
   );
 };
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CardServicio from "./CardServicio";
 import { obtenerServicios } from "../helpers/queries";
 import { Link } from "react-router-dom";
-import { Container, Spinner } from "react-bootstrap";
+import { Container, Row, Spinner, Col } from "react-bootstrap";
 
 const Servicios = () => {
   const [servicios, setServicios] = useState([]);
@@ -36,13 +36,17 @@ const Servicios = () => {
         Si deseas sacar un turno en alguno de nuestros servicios, por favor presiona sobre la imagen
       </p>
 
-      <article className="ConteinerCards mt-3 mb-5">
-        {servicios.map((servicio) => (
-          <Link to={"/Reservas"} key={servicio.idServicio}>
+      <Container className="mt-3 mb-5">
+    <Row>
+      {servicios.map((servicio) => (
+        <Col xs={12} sm={4} className="d-flex justify-content-center align-items-center" key={servicio.idServicio}>
+         
             <CardServicio servicio={servicio} />
-          </Link>
-        ))}
-      </article>
+          
+        </Col>
+      ))}
+    </Row>
+  </Container>
     </section>
   );
 };

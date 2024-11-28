@@ -238,98 +238,64 @@
 
 
 /*---------------------------SERVICIOS----------------------------*/
-.ConteinerCards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  margin: 0 auto;
+.boton {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #c2185b;
+  background-color:#f8c1d4;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
+
+.boton:hover {
+  background-color: #c2185b; /* Color más oscuro al pasar el mouse */
+}
+
+.boton-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
 
 .cardServicios {
-  position: relative;
-  width: 300px;
-  height: 350px;
-  perspective: 1000px;
-  box-sizing: border-box;
+  width: 18rem;
+  height: 18rem;
   margin: 10px;
-}
-
-.cardServicios .face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 10px;
   overflow: hidden;
-  transition: 0.5s;
+  background-color: #fff;
 }
 
-.cardServicios .front {
-  transform: rotateY(0deg);
-  box-shadow: 0 5px 10px #000;
-}
-
-.cardServicios .front .img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.cardServicios .front h3 {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 45px;
-  line-height: 45px;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.4);
-  text-align: center;
-}
-
-.cardServicios .back {
-  transform: rotateY(180deg);
+.cardServicios-des {
   background-color: #e91e63;
-  padding: 15px;
-  color: #f3f3f3;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   text-align: center;
-  box-shadow: 0 5px 10px #000;
+  color: #fde6de;
+  padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+   
 }
 
-.cardServicios .back h3 {
-  font-size: 30px;
-  margin-top: 20px;
-  letter-spacing: 2px;
+.img-servicio {
+  width: 260px;
+  height: 286px;
+  object-fit: cover;
+  display: block;
 }
 
-.cardServicios .back p {
-  letter-spacing: 1px;
-}
 
-.cardServicios:hover .front {
-  transform: rotateY(180deg);
-}
 
-.cardServicios:hover .back {
-  transform: rotateY(360deg);
-}
 
-/* Para pantallas más pequeñas */
-@media (max-width: 1024px) {
-  .ConteinerCards {
-    justify-content: center;
-  }
-  .cardServicios {
-    width: calc(50% - 40px); /* Dos tarjetas por fila en pantallas medianas */
-  }
-}
 
-@media (max-width: 768px) {
-  .cardServicios {
-    width: calc(100% - 40px); /* Una tarjeta por fila en pantallas pequeñas */
-  }
-}
+
+
+
+
+
+
+
